@@ -1,0 +1,10 @@
+.element__title {
+    font-weight: 900;
+    font-size: 21px;
+    line-height: 23px;
+    color: #000000;
+    align-self: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}

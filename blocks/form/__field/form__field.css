@@ -1,0 +1,13 @@
+.form__field {
+    width: 238px;
+    height: 27px;
+    margin: 30px auto 0;
+    padding: 0;
+    border: 0;
+}
+@media screen and (min-width: 768px) {
+    .form__field {
+        width: 358px;
+    }
+    
+}

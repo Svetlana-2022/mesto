@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Mesto</title>
+        <link rel="stylesheet" href="./vendor/fonts/fonts.css">
+        <link rel="stylesheet" href="./pages/index.css">
+    </head>
+    <body class="page">
+        <header class="header">
+            <img class="header__logo" src="./images/Vector(1).svg" alt="логотип">
+            <div class="header__line"></div>
+        </header>
+        <main class="content">
+            <section class="profile">
+                <div class="profile-img">
+                    <img class="profile-img__avatar profile-img__ellipse" src="./images/image.jpg" alt="Кусто">
+                </div>
+                <div class="profile-info">
+                    <div class="profile-info__container">
+                        <h1 class="profile-info__title">Жак-Ив Кусто</h1>                                                    
+                        <button type="button" class="profile-info__edit-button"></button>
+                    </div>
+                    <p class="profile-info__subtitle">Исследователь океана</p>
+                </div>
+                <button class="profile__add-button"></button>
+            </section>
+            <section class="groups">
+                <ul class="groups-elements">
+                    <li class="element">
+                        <div class="element__rectangle">
+                            <img class="element__mask-group" src="./images/kirill-pershin-1088404-unsplash.jpg" alt="фото">
+                            <div class="element-container">
+                                <h4 class="element__title">Карачаевск</h4>
+                                <img class="element__icon element__icon_active" src="./images/Vector(Stroke).svg" alt="вектор">
+                            </div>
+                        </div>
+                    </li>
+                    <li class="element">
+                        <div class="element__rectangle">
+                            <img class="element__mask-group" src="./images/kirill-pershin-1404681-unsplash.jpg" alt="фото">
+                            <div class="element-container">
+                                <h4 class="element__title">Гора Эльбрус</h4>
+                                <img class="element__icon element__icon_active" src="./images/Vector(Stroke).svg" alt="вектор">
+                            </div>
+                        </div>
+                    </li>
+                    <li class="element">
+                        <div class="element__rectangle">
+                            <img class="element__mask-group" src="./images/kirill-pershin-1556355-unsplash.jpg" alt="фото">
+                            <div class="element-container">
+                                <h4 class="element__title">Домбай</h4>
+                                <img class="element__icon element__icon_active" src="./images/Vector(Stroke).svg" alt="вектор">
+                            </div>
+                        </div>
+                    </li>
+                    <li class="element">
+                        <div class="element__rectangle">
+                            <img class="element__mask-group" src="./images/kirill-pershin-1404681-unsplash.jpg" alt="фото">
+                            <div class="element-container">
+                                <h4 class="element__title">Гора Эльбрус</h4>
+                                <img class="element__icon element__icon_active" src="./images/Vector(Stroke).svg" alt="вектор">
+                            </div>
+                        </div>
+                    </li>
+                    <li class="element">
+                        <div class="element__rectangle">
+                            <img class="element__mask-group" src="./images/kirill-pershin-1556355-unsplash.jpg" alt="фото">
+                            <div class="element-container">
+                                <h4 class="element__title">Домбай</h4>
+                                <img class="element__icon element__icon_active" src="./images/Vector(Stroke).svg" alt="вектор">
+                            </div>
+                        </div>
+                    </li>
+                    <li class="element">
+                        <div class="element__rectangle">
+                            <img class="element__mask-group" src="./images/kirill-pershin-1088404-unsplash.jpg" alt="фото">
+                            <div class="element-container">
+                                <h4 class="element__title">Карачаевск</h4>
+                                <img class="element__icon element__icon_active" src="./images/Vector(Stroke).svg" alt="вектор">
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+            <footer class="footer">
+                <div class="footer__copyright">&copy; 2022 Svetlana</div>
+            </footer>
+            <div class="popup"> 
+                <div class="popup__container">
+                    <div class="popup__body">
+                        <div class="popup__close-icon"></div>>
+                        <h3 class="popup__body-title">Редактировать профиль</h3>
+                        <form class="form">
+                            <fieldset class="form__field">
+                                <input type="text" class="form__input-name" placeholder="Имя" name="nameInput">
+                                <div class="form__field-line"></div>
+                            </fieldset>
+                            <fieldset class="form__field">
+                                <input type="text" class="form__input-name form__input-name_type_job" placeholder="О себе" name="jobInput">
+                                <div class="form__field-line"></div>
+                            </fieldset>
+                            <button class="form__submit-button">Сохранить</button>
+                        </form>    
+                    </div>
+                </div>
+            </div>
+            <script src="./script.js"></script>
+        </main>
+    </body>
+</html>
