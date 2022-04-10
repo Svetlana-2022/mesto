@@ -33,7 +33,7 @@
                             <img class="element__mask-group" src="./images/kirill-pershin-1088404-unsplash.jpg" alt="фото">
                             <div class="element-container">
                                 <h4 class="element__title">Карачаевск</h4>
-                                <img class="element__icon element__icon_active" src="./images/Vector(Stroke).svg" alt="вектор">
+                                <button class="element__like element__like_active"></button>
                             </div>
                         </div>
                     </li>
@@ -42,7 +42,7 @@
                             <img class="element__mask-group" src="./images/kirill-pershin-1404681-unsplash.jpg" alt="фото">
                             <div class="element-container">
                                 <h4 class="element__title">Гора Эльбрус</h4>
-                                <img class="element__icon element__icon_active" src="./images/Vector(Stroke).svg" alt="вектор">
+                                <button class="element__like element__like_active"></button>
                             </div>
                         </div>
                     </li>
@@ -51,7 +51,7 @@
                             <img class="element__mask-group" src="./images/kirill-pershin-1556355-unsplash.jpg" alt="фото">
                             <div class="element-container">
                                 <h4 class="element__title">Домбай</h4>
-                                <img class="element__icon element__icon_active" src="./images/Vector(Stroke).svg" alt="вектор">
+                                <button class="element__like element__like_active"></button>
                             </div>
                         </div>
                     </li>
@@ -60,7 +60,7 @@
                             <img class="element__mask-group" src="./images/kirill-pershin-1404681-unsplash.jpg" alt="фото">
                             <div class="element-container">
                                 <h4 class="element__title">Гора Эльбрус</h4>
-                                <img class="element__icon element__icon_active" src="./images/Vector(Stroke).svg" alt="вектор">
+                                <button class="element__like element__like_active"></button>
                             </div>
                         </div>
                     </li>
@@ -69,7 +69,7 @@
                             <img class="element__mask-group" src="./images/kirill-pershin-1556355-unsplash.jpg" alt="фото">
                             <div class="element-container">
                                 <h4 class="element__title">Домбай</h4>
-                                <img class="element__icon element__icon_active" src="./images/Vector(Stroke).svg" alt="вектор">
+                                <button class="element__like element__like_active"></button>
                             </div>
                         </div>
                     </li>
@@ -78,35 +78,29 @@
                             <img class="element__mask-group" src="./images/kirill-pershin-1088404-unsplash.jpg" alt="фото">
                             <div class="element-container">
                                 <h4 class="element__title">Карачаевск</h4>
-                                <img class="element__icon element__icon_active" src="./images/Vector(Stroke).svg" alt="вектор">
+                                <button class="element__like element__like_active"></button>
                             </div>
                         </div>
                     </li>
                 </ul>
             </section>
-            <footer class="footer">
-                <div class="footer__copyright">&copy; 2022 Svetlana</div>
-            </footer>
-            <div class="popup"> 
-                <div class="popup__container">
-                    <div class="popup__body">
-                        <div class="popup__close-icon"></div>>
-                        <h3 class="popup__body-title">Редактировать профиль</h3>
-                        <form class="form">
-                            <fieldset class="form__field">
-                                <input type="text" class="form__input-name" placeholder="Имя" name="nameInput">
-                                <div class="form__field-line"></div>
-                            </fieldset>
-                            <fieldset class="form__field">
-                                <input type="text" class="form__input-name form__input-name_type_job" placeholder="О себе" name="jobInput">
-                                <div class="form__field-line"></div>
-                            </fieldset>
-                            <button class="form__submit-button">Сохранить</button>
-                        </form>    
-                    </div>
+        </main>
+        <footer class="footer">
+            <div class="footer__copyright">&copy; 2022 Svetlana</div>
+        </footer>
+        <div class="popup"> 
+            <div class="popup__container">
+                <div class="popup__body">
+                    <div class="popup__close-icon"></div>>
+                    <h3 class="popup__body-title">Редактировать профиль</h3>
+                    <form class="form">
+                        <input type="text" class="form__input-name" placeholder="Имя" name="nameInput">
+                        <input type="text" class="form__input-name form__input-name_type_job" placeholder="О себе" name="jobInput">
+                        <button class="form__submit-button">Сохранить</button>
+                    </form>    
                 </div>
             </div>
-            <script src="./script.js"></script>
-        </main>
+        </div>
+        <script src="./script.js"></script>
     </body>
 </html>

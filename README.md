@@ -5,4 +5,4 @@
 **Сайт адаптивный под экраны мониторов от 320 пикселей до 1280.**
 Написан на языках: CSS, HTML, JavaScript.
 Для создания сайта использованы - технологии Grid Layout, и флексбокс-вёрстка.
-(https://svetlana-2022.github.io/mesto/index.html)
+(https://svetlana-2022.github.io/mesto/)
