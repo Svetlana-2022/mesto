@@ -1,5 +1,5 @@
 .profile-info__subtitle {
-    font-family: "Inter-Regular";
+    font-family: "Inter";
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -11,6 +11,13 @@
 @media screen and (min-width: 768px) {
     .profile-info__subtitle {
         text-align: left;
+    }
+    
+}
+@media screen and (min-width: 1024px) {
+    .profile-info__subtitle {
+        font-size: 18px;
+        line-height: 22px;
     }
     
 }
