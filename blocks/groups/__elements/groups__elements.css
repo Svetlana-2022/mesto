@@ -1,4 +1,4 @@
-.groups-elements {
+.groups__elements {
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr;
@@ -9,14 +9,14 @@
     padding: 0;
 }
 @media screen and (min-width: 768px) {
-    .groups-elements {
+    .groups__elements {
         grid-template-columns: repeat(2, 1fr);
         column-gap: 17px;
         row-gap: 20px;
     }
 }
 @media screen and (min-width: 1024px) {
-    .groups-elements {
+    .groups__elements {
         grid-template-columns: repeat(3, 1fr);
     }
 }

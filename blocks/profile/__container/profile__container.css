@@ -1,10 +1,9 @@
-.profile-img {
+.profile__container {
     display: flex;
     justify-content: center;
 }
 @media screen and (min-width: 768px) {
-    .profile-img {
+    .profile__container {
         justify-content: start;
     }
-    
 }

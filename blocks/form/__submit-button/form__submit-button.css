@@ -1,10 +1,15 @@
 .form__submit-button {
     width: 238px;
     height: 46px;
-    margin: 45px auto 0 auto;
+    margin: 45px auto 25px auto;
     text-align: center;
     background: #000000;
     border-radius: 2px;
+    font-family: "Inter",Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
     color: #fff;
     display: block;
 }
@@ -17,6 +22,9 @@
         width: 358px;
         height: 50px;
         margin-top: 48px;
+        margin-bottom: 37px;
+        font-size: 18px;
+        line-height: 22px;
     }
     
 }
