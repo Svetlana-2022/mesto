@@ -11,15 +11,12 @@ function openPopup() {
 function closeIconPopup() {
     popup.classList.remove('popup_opened');
 }
-popupCloseIcon.addEventListener('click', () => {
-    closeIconPopup();
-})
-profileEditButton.addEventListener('click', () => {
-    openPopup();
-})
+popupCloseIcon.addEventListener('click', closeIconPopup);
+profileEditButton.addEventListener('click', openPopup);
+
 let formElement = document.querySelector('.form');
-let nameInput = document.querySelector('.form__input-name_type_name');
-let jobInput = document.querySelector('.form__input-name_type_job');
+let nameInput = document.querySelector('.form__input_type_name');
+let jobInput = document.querySelector('.form__input_type_job');
 let profileInfoTitle = document.querySelector('.profile__title');
 let profileInfoSubtitle = document.querySelector('.profile__subtitle');
 
