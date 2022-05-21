@@ -4,5 +4,6 @@
     width: 282px;
     height: 361px;
     background: #FFFFFF;
-    border-radius: 10px; 
+    border-radius: 10px;
+    position: relative;    
 }
