@@ -1,0 +1,18 @@
+.popup__container_for_img {
+    width: 240px;
+    min-height: 299px;
+    position: relative;
+}
+@media screen and (min-width: 768px) {
+    .popup__container_for_img {
+        width: 433px;
+        min-height: 540px;
+    }
+    
+}
+@media screen and (min-width: 1280px) {
+    .popup__container_for_img {
+        width: 816px;
+    }
+    
+}

@@ -5,6 +5,9 @@ const popupCloseIcon = document.querySelector('.popup__close-icon');
 const profileAddButton = document.querySelector('.profile__add-button');
 const popupForCard = document.querySelector('.popup_for_card');
 const popupCloseIconForCard = document.querySelector('.popup__close-icon_for_card');
+const popupForImg = document.querySelector('.popup_for_img');
+const popupCloseIconForImg = document.querySelector('.popup__close-icon_for_img');
+
 
 function openPopup(popup) {
     popup.classList.add('popup_opened');
@@ -20,6 +23,9 @@ popupCloseIcon.addEventListener('click', () => {
 popupCloseIconForCard.addEventListener('click', () =>{
   closeIconPopup(popupForCard);
 });
+popupCloseIconForImg.addEventListener('click', () =>{
+  closeIconPopup(popupForImg);
+});
 
 profileEditButton.addEventListener('click', () => {
   openPopup(popupForEdit);
@@ -30,6 +36,7 @@ profileEditButton.addEventListener('click', () => {
 profileAddButton.addEventListener('click', () => {
   openPopup(popupForCard);
 });
+
 
 let formElement = document.querySelector('.form');
 let nameInput = document.querySelector('.form__input_type_name');
@@ -78,35 +85,51 @@ const groupsElements = document.querySelector('.groups__elements');
 initialCards.forEach(function(card){
     const elementTemplate = document.querySelector('.element-template').content;
     const element = elementTemplate.querySelector('.element').cloneNode(true);
-    element.querySelector('.element__mask-group').src = card.link;
+    let elImg = element.querySelector('.element__mask-group').src = card.link;
     element.querySelector('.element__title').textContent = card.name;
     element.querySelector('.element__like').addEventListener('click', function(evt) {
       evt.target.classList.toggle('element__like_active');
-      console.log(evt.target);
+    });
+    element.querySelector('.element__trash').addEventListener('click', () => {
+      element.remove();
     });
 groupsElements.prepend(element);
-})
+});
 
 let formElementForCard = document.querySelector('.form_for_card');
 let titleInput = document.querySelector('.form__input_type_title');
 let linkInput = document.querySelector('.form__input_type_link');
-let elementContaner = document.querySelector('.element__container');
 
 // Обработчик «отправки» формы,
 function formForCardSubmitHandler (evt) {
     evt.preventDefault();
     const newElementTemplate = document.querySelector('.element-template').content;
     const newElement = newElementTemplate.querySelector('.element').cloneNode(true);
-    newElement.querySelector('.element__mask-group').src = linkInput.src;
+    newElement.querySelector('.element__mask-group').src = linkInput.value;
     newElement.querySelector('.element__title').textContent = titleInput.value;
     newElement.querySelector('.element__like').addEventListener('click', function(evt) {
       evt.target.classList.toggle('element__like_active');
-      console.log(evt.target);
+    });
+    newElement.querySelector('.element__trash').addEventListener('click', () => {
+      newElement.remove();
     });
     groupsElements.prepend(newElement);
-    
     closeIconPopup(popupForCard);
 
 }
 
 formElementForCard.addEventListener('submit', formForCardSubmitHandler);
+
+let popupElImg = document.querySelector('.popup__el-img');
+let popupElCaption = document.querySelector('.popup__el-caption');
+
+groupsElements.addEventListener('click', (evt) => {
+  openPopup(popupForImg);
+  popupElImg.src = evt.target.src;
+  popupElCaption.textContent = evt.target.textContent;
+  console.log(evt.target);
+});
+
+
+
+
