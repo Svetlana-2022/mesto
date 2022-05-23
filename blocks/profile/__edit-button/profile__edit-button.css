@@ -8,11 +8,11 @@
     height: 18px;
     border: 1px solid #fff;
     box-sizing: border-box;
-    position: absolute;
-    top: 8px;
-    right: 18px;
+    margin-left: 18px;
     padding: 0;
     cursor: pointer;
+    align-self: center;
+    justify-self: end;
 }
 .profile__edit-button:hover {
     color: #fff;

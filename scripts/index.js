@@ -7,7 +7,17 @@ const popupForCard = document.querySelector('.popup_for_card');
 const popupCloseIconForCard = document.querySelector('.popup__close-icon_for_card');
 const popupForImg = document.querySelector('.popup_for_img');
 const popupCloseIconForImg = document.querySelector('.popup__close-icon_for_img');
-
+const formElement = document.querySelector('.form');
+const nameInput = document.querySelector('.form__input_type_name');
+const jobInput = document.querySelector('.form__input_type_job');
+const profileInfoTitle = document.querySelector('.profile__title');
+const profileInfoSubtitle = document.querySelector('.profile__subtitle');
+const groupsElements = document.querySelector('.groups__elements');
+const popupElImg = document.querySelector('.popup__el-img');
+const popupElCaption = document.querySelector('.popup__el-caption');
+const formElementForCard = document.querySelector('.form_for_card');
+const titleInput = document.querySelector('.form__input_type_title');
+const linkInput = document.querySelector('.form__input_type_link');
 
 function openPopup(popup) {
     popup.classList.add('popup_opened');
@@ -36,13 +46,6 @@ profileEditButton.addEventListener('click', () => {
 profileAddButton.addEventListener('click', () => {
   openPopup(popupForCard);
 });
-
-
-let formElement = document.querySelector('.form');
-let nameInput = document.querySelector('.form__input_type_name');
-let jobInput = document.querySelector('.form__input_type_job');
-let profileInfoTitle = document.querySelector('.profile__title');
-let profileInfoSubtitle = document.querySelector('.profile__subtitle');
 
 // Обработчик «отправки» формы,
 function formSubmitHandler (evt) {
@@ -81,11 +84,11 @@ const initialCards = [
       link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
     }
   ];
-const groupsElements = document.querySelector('.groups__elements');
+
 initialCards.forEach(function(card){
     const elementTemplate = document.querySelector('.element-template').content;
     const element = elementTemplate.querySelector('.element').cloneNode(true);
-    let elImg = element.querySelector('.element__mask-group').src = card.link;
+    element.querySelector('.element__mask-group').src = card.link;
     element.querySelector('.element__title').textContent = card.name;
     element.querySelector('.element__like').addEventListener('click', function(evt) {
       evt.target.classList.toggle('element__like_active');
@@ -93,12 +96,13 @@ initialCards.forEach(function(card){
     element.querySelector('.element__trash').addEventListener('click', () => {
       element.remove();
     });
+    element.querySelector('.element__mask-group').addEventListener('click', (evt) => {
+      openPopup(popupForImg);
+      popupElImg.src = evt.target.src;
+      popupElCaption.textContent = element.textContent;
+    });
 groupsElements.prepend(element);
 });
-
-let formElementForCard = document.querySelector('.form_for_card');
-let titleInput = document.querySelector('.form__input_type_title');
-let linkInput = document.querySelector('.form__input_type_link');
 
 // Обработчик «отправки» формы,
 function formForCardSubmitHandler (evt) {
@@ -113,6 +117,11 @@ function formForCardSubmitHandler (evt) {
     newElement.querySelector('.element__trash').addEventListener('click', () => {
       newElement.remove();
     });
+    newElement.querySelector('.element__mask-group').addEventListener('click', (evt) => {
+      openPopup(popupForImg);
+      popupElImg.src = evt.target.src;
+      popupElCaption.textContent = newElement.textContent;
+    });
     groupsElements.prepend(newElement);
     closeIconPopup(popupForCard);
 
@@ -120,15 +129,7 @@ function formForCardSubmitHandler (evt) {
 
 formElementForCard.addEventListener('submit', formForCardSubmitHandler);
 
-let popupElImg = document.querySelector('.popup__el-img');
-let popupElCaption = document.querySelector('.popup__el-caption');
 
-groupsElements.addEventListener('click', (evt) => {
-  openPopup(popupForImg);
-  popupElImg.src = evt.target.src;
-  popupElCaption.textContent = evt.target.textContent;
-  console.log(evt.target);
-});
 
 
 

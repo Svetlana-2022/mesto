@@ -1,12 +1,19 @@
 .profile__info {
-    max-width: 282px;
+    max-width: 230px;
     min-height: 54px;
-    position: relative;
     align-self: center;
+    justify-self: end;
+    display: grid;
+}
+@media screen and (min-width: 768px) {
+    .profile__info {
+        justify-self: start;
+    }
 }
 @media screen and (min-width: 1024px) {
     .profile__info {
         max-width: 336px;
         min-height: 73px;
+        grid-template-columns: max-content, 24px;
     }
 }
