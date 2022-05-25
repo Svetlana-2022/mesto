@@ -1,17 +1,17 @@
-.popup__el-img {
+.popup__container_for_img {
     width: 240px;
     height: 299px;
-    object-fit: cover;
+    position: relative;
 }
 @media screen and (min-width: 768px) {
-    .popup__el-img {
+    .popup__container_for_img {
         width: 433px;
         height: 540px;
     }
     
 }
 @media screen and (min-width: 1280px) {
-    .popup__el-img {
+    .popup__container_for_img {
         width: 816px;
     }
     
