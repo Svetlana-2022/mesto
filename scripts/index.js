@@ -12,7 +12,7 @@ const nameInput = document.querySelector('.form__input_type_name');
 const jobInput = document.querySelector('.form__input_type_job');
 const profileInfoTitle = document.querySelector('.profile__title');
 const profileInfoSubtitle = document.querySelector('.profile__subtitle');
-const groupsElements = document.querySelector('.groups__elements');
+const groupElement = document.querySelector('.groups__elements');
 const popupElImg = document.querySelector('.popup__el-img');
 const popupElCaption = document.querySelector('.popup__el-caption');
 const formElementForCard = document.querySelector('.form_for_card');
@@ -84,45 +84,45 @@ const initialCards = [
       link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
     }
   ];
-
-initialCards.forEach(function(card){
-    const elementTemplate = document.querySelector('.element-template').content;
+   
+function createCard(card) {
+  const elementTemplate = document.querySelector('.element-template').content;
     const element = elementTemplate.querySelector('.element').cloneNode(true);
-    element.querySelector('.element__mask-group').src = card.link;
-    element.querySelector('.element__title').textContent = card.name;
+    const elMaskGroup = element.querySelector('.element__mask-group');
+    elMaskGroup.src = card.link;
+    const elTitle = element.querySelector('.element__title');
+    elTitle.textContent = card.name;
     element.querySelector('.element__like').addEventListener('click', function(evt) {
       evt.target.classList.toggle('element__like_active');
     });
     element.querySelector('.element__trash').addEventListener('click', () => {
       element.remove();
     });
-    element.querySelector('.element__mask-group').addEventListener('click', (evt) => {
+    elMaskGroup.addEventListener('click', (evt) => {
       openPopup(popupForImg);
       popupElImg.src = evt.target.src;
       popupElCaption.textContent = element.textContent;
     });
-groupsElements.prepend(element);
+    return element;
+}
+
+function inserstCard(element) {
+  const singleElement = createCard(element);
+  groupElement.prepend(singleElement);  
+}
+
+initialCards.forEach(function(card){
+  inserstCard(card);
 });
 
 // Обработчик «отправки» формы,
 function formForCardSubmitHandler (evt) {
     evt.preventDefault();
-    const newElementTemplate = document.querySelector('.element-template').content;
-    const newElement = newElementTemplate.querySelector('.element').cloneNode(true);
-    newElement.querySelector('.element__mask-group').src = linkInput.value;
-    newElement.querySelector('.element__title').textContent = titleInput.value;
-    newElement.querySelector('.element__like').addEventListener('click', function(evt) {
-      evt.target.classList.toggle('element__like_active');
-    });
-    newElement.querySelector('.element__trash').addEventListener('click', () => {
-      newElement.remove();
-    });
-    newElement.querySelector('.element__mask-group').addEventListener('click', (evt) => {
-      openPopup(popupForImg);
-      popupElImg.src = evt.target.src;
-      popupElCaption.textContent = newElement.textContent;
-    });
-    groupsElements.prepend(newElement);
+    const card = {};
+    card.link = linkInput.value;
+    card.name = titleInput.value;
+    inserstCard(card);
+    
     closeIconPopup(popupForCard);
 
 }
