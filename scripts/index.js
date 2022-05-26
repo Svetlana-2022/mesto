@@ -106,9 +106,9 @@ function createCard(card) {
     return element;
 }
 
+
 function inserstCard(element) {
-  const singleElement = createCard(element);
-  groupElement.prepend(singleElement);  
+  groupElement.prepend(createCard(element));  
 }
 
 initialCards.forEach(function(card){
