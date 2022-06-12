@@ -18,30 +18,35 @@ const popupElCaption = document.querySelector('.popup__el-caption');
 const formElementForCard = document.querySelector('.form_for_card');
 const titleInput = document.querySelector('.form__input_type_title');
 const linkInput = document.querySelector('.form__input_type_link');
-//const popups document.querySelectorAll('.popup');
+const popups = document.querySelectorAll('.popup');
 
 function openPopup(popup) {
     popup.classList.add('popup_opened');
-    document.addEventListener('keydown',haldeEscKeydoun);
+    document.addEventListener('keydown', haldeEscKeydown);
+    popup.addEventListener('click', haldeOverlay);
 }
 
 function closeIconPopup(popup) {
   popup.classList.remove('popup_opened');
-}
-function haldeEscKeydoun(evt) {
-  if(evt.key ==="Escape") {
-    closeIconPopup(popup);
-    console.log(evt.key);
-  }
+  document.removeEventListener('keydown',haldeEscKeydown);
 }
 
-//TODO
-//popup.addEventListener('click', (evt) => {
-  //if(evt.currentTarget) {
-    //closeIconPopup(popupForEdit);
-    
-  //}  
-//});
+const haldeEscKeydown = (evt) => {
+  const popups = popupArray(document);
+  if(evt.key ==="Escape") {
+    closeIconPopup(popups.find(popupEl =>
+      popupEl.classList.contains('popup_opened')));
+  }
+}
+const popupArray = (document) => {
+  return Array.from(document.querySelectorAll('.popup'));
+}
+
+const haldeOverlay = (evt) => {
+  if(evt.target === evt.currentTarget) {
+    closeIconPopup(evt.target);
+  }
+}
 
 popupCloseIcon.addEventListener('click', () => {
   closeIconPopup(popupForEdit);
@@ -145,9 +150,4 @@ function formForCardSubmitHandler (evt) {
 }
 
 formElementForCard.addEventListener('submit', formForCardSubmitHandler);
-
-
-
-
-
 

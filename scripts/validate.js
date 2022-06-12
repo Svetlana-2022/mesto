@@ -1,4 +1,4 @@
-
+//const body = document.querySelector('.page');
 const toggleButtonState = (inputList, buttonElement) => {
     if(hasInvalidInput(inputList)) {
       buttonElement.classList.add('form__submit-button_disabled');
@@ -16,21 +16,19 @@ const toggleButtonState = (inputList, buttonElement) => {
   //показывает элемент ошибки
   const showInputError = (formElement, inputElement, errorMessage) => {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-    console.log(errorElement);
-    console.log(inputElement.id);
     inputElement.classList.add('form__input_type_error');
     errorElement.textContent = errorMessage;
     errorElement.classList.add('form__input-error_active');
-    placeholderError(inputElement);
-    
-  }//скрывает элемент ошибки
+    placeholderError(inputElement);  
+  }
+  //скрывает элемент ошибки
   const hideInputError = (formElement, inputElement) => {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.remove('form__input_type_error');
     errorElement.classList.remove('form__input-error_active');
     errorElement.textContent = '';
   }
-  
+  //показывает ошибку в инпуте url
   const placeholderError = (inputElement) => {
     if(inputElement.id === "link-card") {
       inputElement.value =  inputElement.nextElementSibling.textContent;
@@ -42,7 +40,6 @@ const toggleButtonState = (inputList, buttonElement) => {
       showInputError(formElement, inputElement, inputElement.validationMessage);
     } else {
       hideInputError(formElement, inputElement);
-      console.log(inputElement.validity);
     } 
   }
    //обработчик всех полей
@@ -55,9 +52,6 @@ const toggleButtonState = (inputList, buttonElement) => {
         isValid(formElement, inputElement);
         toggleButtonState(inputList, buttonElement);
       });
-      console.log(inputElement.validationMessage);
-      console.log(inputList);
-      console.log(inputElement);
     });
   }
   //все формы
@@ -71,3 +65,12 @@ const toggleButtonState = (inputList, buttonElement) => {
     });
   }
   enableValidation();
+
+  enableValidation({
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__button',
+    inactiveButtonClass: 'popup__button_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__error_visible'
+  });
