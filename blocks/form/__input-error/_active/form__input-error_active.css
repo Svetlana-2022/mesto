@@ -1,5 +1,5 @@
 .form__input-error_active {
-    
+    position: absolute;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;

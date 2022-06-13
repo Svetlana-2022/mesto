@@ -1,13 +1,13 @@
-const popup = document.querySelector('.popup');
+
 const popupForEdit = document.querySelector('.popup_for_edit');
 const profileEditButton = document.querySelector('.profile__edit-button');
-const popupCloseIcon = document.querySelector('.popup__close-icon');
+const popupCloseIconForEdit = document.querySelector('.popup__close-icon_for_edit');
 const profileAddButton = document.querySelector('.profile__add-button');
 const popupForCard = document.querySelector('.popup_for_card');
 const popupCloseIconForCard = document.querySelector('.popup__close-icon_for_card');
 const popupForImg = document.querySelector('.popup_for_img');
 const popupCloseIconForImg = document.querySelector('.popup__close-icon_for_img');
-const form = document.querySelector('.form');
+const formElementForEdit = popupForEdit.querySelector('.form_for_edit');
 const nameInput = document.querySelector('.form__input_type_name');
 const jobInput = document.querySelector('.form__input_type_job');
 const profileInfoTitle = document.querySelector('.profile__title');
@@ -15,15 +15,15 @@ const profileInfoSubtitle = document.querySelector('.profile__subtitle');
 const groupElement = document.querySelector('.groups__elements');
 const popupElImg = document.querySelector('.popup__el-img');
 const popupElCaption = document.querySelector('.popup__el-caption');
-const formElementForCard = document.querySelector('.form_for_card');
+const formElementForCard = popupForCard.querySelector('.form_for_card');
 const titleInput = document.querySelector('.form__input_type_title');
 const linkInput = document.querySelector('.form__input_type_link');
 const popups = document.querySelectorAll('.popup');
+const elementTemplate = document.querySelector('.element-template').content;
 
 function openPopup(popup) {
     popup.classList.add('popup_opened');
-    document.addEventListener('keydown', haldeEscKeydown);
-    popup.addEventListener('click', haldeOverlay);
+    document.addEventListener('keydown', haldeEscKeydown);    
 }
 
 function closeIconPopup(popup) {
@@ -32,11 +32,10 @@ function closeIconPopup(popup) {
 }
 
 const haldeEscKeydown = (evt) => {
-  const popups = popupArray(document);
   if(evt.key ==="Escape") {
-    closeIconPopup(popups.find(popupEl =>
-      popupEl.classList.contains('popup_opened')));
+    closeIconPopup(document.querySelector('.popup_opened'));
   }
+  const popups = popupArray(document);
 }
 const popupArray = (document) => {
   return Array.from(document.querySelectorAll('.popup'));
@@ -47,11 +46,13 @@ const haldeOverlay = (evt) => {
     closeIconPopup(evt.target);
   }
 }
-
-popupCloseIcon.addEventListener('click', () => {
-  closeIconPopup(popupForEdit);
+popups.forEach((popup) => {
+  popup.addEventListener('click', haldeOverlay);
 });
 
+popupCloseIconForEdit.addEventListener('click', () => {
+  closeIconPopup(popupForEdit);
+});
 popupCloseIconForCard.addEventListener('click', () =>{
   closeIconPopup(popupForCard);
 });
@@ -67,6 +68,8 @@ profileEditButton.addEventListener('click', () => {
 
 profileAddButton.addEventListener('click', () => {
   openPopup(popupForCard);
+  linkInput.value = '';
+  titleInput.value = '';
 });
 
 // Обработчик «отправки» формы,
@@ -77,8 +80,7 @@ function formSubmitHandler (evt) {
     closeIconPopup(popupForEdit);
 
 }
-
-form.addEventListener('submit', formSubmitHandler);
+formElementForEdit.addEventListener('submit', formSubmitHandler);
 
 const initialCards = [
     {
@@ -108,10 +110,10 @@ const initialCards = [
   ];
    
 function createCard(card) {
-  const elementTemplate = document.querySelector('.element-template').content;
     const element = elementTemplate.querySelector('.element').cloneNode(true);
     const elMaskGroup = element.querySelector('.element__mask-group');
     elMaskGroup.src = card.link;
+    elMaskGroup.alt = card.name;
     const elTitle = element.querySelector('.element__title');
     elTitle.textContent = card.name;
     element.querySelector('.element__like').addEventListener('click', function(evt) {
@@ -123,6 +125,7 @@ function createCard(card) {
     elMaskGroup.addEventListener('click', (evt) => {
       openPopup(popupForImg);
       popupElImg.src = evt.target.src;
+      popupElImg.alt = element.textContent;
       popupElCaption.textContent = element.textContent;
     });
     return element;
@@ -146,7 +149,7 @@ function formForCardSubmitHandler (evt) {
     inserstCard(card);
     
     closeIconPopup(popupForCard);
-
+    
 }
 
 formElementForCard.addEventListener('submit', formForCardSubmitHandler);
