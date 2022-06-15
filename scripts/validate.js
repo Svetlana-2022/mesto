@@ -1,3 +1,11 @@
+const formSettings = {
+  formSelector: '.form',
+  inputSelector: '.form__input',
+  submitButtonSelector: '.form__submit-button',
+  inactiveButtonClass: 'form__submit-button_disabled',
+  inputErrorClass: 'form__input_type_error',
+  errorClass: 'form__input-error_active'
+}
 
 const toggleButtonState = (inputList, buttonElement, settings) => {
     if(hasInvalidInput(inputList)) {
@@ -7,18 +15,31 @@ const toggleButtonState = (inputList, buttonElement, settings) => {
       buttonElement.classList.remove(settings.inactiveButtonClass);
       buttonElement.removeAttribute('disabled');
     }
-  }//проверяет все инпуты на валидность
+
+  }
+
+  //проверяет все инпуты на валидность
   const hasInvalidInput = (inputList) => {
     return inputList.some((inputElement) => {
       return !inputElement.validity.valid;
     });
   }
+  
+  //проверяет поля формы при открытие попапа
+  const isFormValid = (inputList, formElement, buttonElement, settings) => {
+    inputList.forEach((inputElement) => {
+      inputElement.classList.contains(settings.inputErrorClass) && hideInputError(formElement, inputElement, settings);
+        toggleButtonState(inputList, buttonElement, settings);
+    });
+  }
+
   //показывает элемент ошибки
   const showInputError = (formElement, inputElement, errorMessage, settings) => {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.add(settings.inputErrorClass);
     errorElement.textContent = errorMessage;
-    errorElement.classList.add(settings.errorClass);  
+    errorElement.classList.add(settings.errorClass);
+    console.log(inputElement.id);  
   }
   //скрывает элемент ошибки
   const hideInputError = (formElement, inputElement, settings) => {
@@ -30,6 +51,7 @@ const toggleButtonState = (inputList, buttonElement, settings) => {
   //проверяет валидацию
   const isValid = (formElement, inputElement, settings) => {
     if(!inputElement.validity.valid) {
+      console.log(inputElement.validity);
       showInputError(formElement, inputElement, inputElement.validationMessage, settings);
     } else {
       hideInputError(formElement, inputElement, settings);
@@ -57,11 +79,5 @@ const toggleButtonState = (inputList, buttonElement, settings) => {
       setEventListeners(formElement, settings);
     });
   }
-  enableValidation({
-    formSelector: '.form',
-    inputSelector: '.form__input',
-    submitButtonSelector: '.form__submit-button',
-    inactiveButtonClass: 'form__submit-button_disabled',
-    inputErrorClass: 'form__input_type_error',
-    errorClass: 'form__input-error_active'
-  });
+   
+  enableValidation(formSettings);
