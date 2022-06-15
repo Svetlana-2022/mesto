@@ -38,8 +38,7 @@ const toggleButtonState = (inputList, buttonElement, settings) => {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.add(settings.inputErrorClass);
     errorElement.textContent = errorMessage;
-    errorElement.classList.add(settings.errorClass);
-    console.log(inputElement.id);  
+    errorElement.classList.add(settings.errorClass);  
   }
   //скрывает элемент ошибки
   const hideInputError = (formElement, inputElement, settings) => {
@@ -51,7 +50,6 @@ const toggleButtonState = (inputList, buttonElement, settings) => {
   //проверяет валидацию
   const isValid = (formElement, inputElement, settings) => {
     if(!inputElement.validity.valid) {
-      console.log(inputElement.validity);
       showInputError(formElement, inputElement, inputElement.validationMessage, settings);
     } else {
       hideInputError(formElement, inputElement, settings);

@@ -68,7 +68,6 @@ profileEditButton.addEventListener('click', () => {
 profileAddButton.addEventListener('click', () => {
   linkInput.value = '';
   titleInput.value = '';
-  
   openPopup(popupForCard);
   isFormValid([linkInput, titleInput], formElementForCard, buttonForCard, formSettings);
 });
@@ -131,7 +130,6 @@ function createCard(card) {
     });
     return element;
 }
-
 
 function inserstCard(element) {
   groupElement.prepend(createCard(element));  
