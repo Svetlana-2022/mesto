@@ -21,7 +21,7 @@ const profileInfoTitle = document.querySelector('.profile__title');
 const profileInfoSubtitle = document.querySelector('.profile__subtitle');
 const groupElement = document.querySelector('.groups__elements');
 const elementTemplate = document.querySelector('.element-template').content;
-
+//const templateSelector = document.querySelector('.element-template');
 
 function openPopup(popup) {
     popup.classList.add('popup_opened');
@@ -108,36 +108,56 @@ const initialCards = [
       link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
     }
   ];
-   
-function createCard(card) {
-    const element = elementTemplate.querySelector('.element').cloneNode(true);
-    const elMaskGroup = element.querySelector('.element__mask-group');
-    elMaskGroup.src = card.link;
-    elMaskGroup.alt = card.name;
-    const elTitle = element.querySelector('.element__title');
-    elTitle.textContent = card.name;
-    element.querySelector('.element__like').addEventListener('click', function(evt) {
-      evt.target.classList.toggle('element__like_active');
-    });
-    element.querySelector('.element__trash').addEventListener('click', () => {
-      element.remove();
-    });
-    elMaskGroup.addEventListener('click', (evt) => {
-      openPopup(popupForImg);
-      popupElImg.src = evt.target.src;
-      popupElImg.alt = element.textContent;
-      popupElCaption.textContent = element.textContent;
-    });
-    return element;
-}
 
-function inserstCard(element) {
-  groupElement.prepend(createCard(element));  
-}
-
-initialCards.forEach(function(card){
-  inserstCard(card);
+import { Card } from './Card.js';
+  //для каждой карточки создаётся экземпляр класса
+initialCards.forEach((item) => {
+  const card = new Card(item);
+  const cardElement = card.generateCard();
+  document.querySelector('.groups__elements').prepend(cardElement);
 });
+//функция для открытия просмотра попапа картинки
+function openImage(link, name) {
+  popupElImg.src = link;
+  popupElImg.alt = name;
+  popupElCaption.textContent = name;
+}   
+
+
+
+
+
+
+  //function createCard(card) {
+    //const element = elementTemplate.querySelector('.element').cloneNode(true);
+    //const elMaskGroup = element.querySelector('.element__mask-group');
+    //elMaskGroup.src = card.link;
+    //elMaskGroup.alt = card.name;
+    //const elTitle = element.querySelector('.element__title');
+    //elTitle.textContent = card.name;
+    //element.querySelector('.element__like').addEventListener('click', function(evt) {
+      //evt.target.classList.toggle('element__like_active');
+    //});
+    //element.querySelector('.element__trash').addEventListener('click', () => {
+      //element.remove();
+    //});
+    //elMaskGroup.addEventListener('click', (evt) => {
+      //openPopup(popupForImg);
+      //popupElImg.src = evt.target.src;
+      //popupElImg.alt = element.textContent;
+      //popupElCaption.textContent = element.textContent;
+    //});
+    //return element;
+//}
+
+
+//function inserstCard(element) {
+  //groupElement.prepend(createCard(element));  
+//}
+
+//initialCards.forEach(function(card){
+  //inserstCard(card);
+//});
 
 // Обработчик «отправки» формы,
 function formForCardSubmitHandler (evt) {
