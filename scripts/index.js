@@ -21,7 +21,7 @@ const profileInfoTitle = document.querySelector('.profile__title');
 const profileInfoSubtitle = document.querySelector('.profile__subtitle');
 const groupElement = document.querySelector('.groups__elements');
 const elementTemplate = document.querySelector('.element-template').content;
-//const templateSelector = document.querySelector('.element-template');
+
 
 function openPopup(popup) {
     popup.classList.add('popup_opened');
@@ -109,21 +109,76 @@ const initialCards = [
     }
   ];
 
-import { Card } from './Card.js';
-  //для каждой карточки создаётся экземпляр класса
-initialCards.forEach((item) => {
-  const card = new Card(item);
-  const cardElement = card.generateCard();
-  document.querySelector('.groups__elements').prepend(cardElement);
-});
+//создаёт карточку с текстом и ссылкой на изображение
+class Card {
+  //принимает в коструктор её данные и селектор её темплат-элемента
+  constructor(link, name, templateSelector) {
+      this._link = link;
+      this._name = name;
+      this._templateSelector = templateSelector;
+  }
+  
+  //содержит приватные методы, 
+  //которые работают с разметкой
+  _getTemplate() {
+      const cardElement = document.querySelector(this._templateSelector)
+      .content
+      .querySelector('.element')
+      .cloneNode(true);
+
+      return cardElement;
+  }
+  //устанавливают слушатели событий
+  _setEventListeners() {
+      this._element.querySelector('.element__mask-group').addEventListener('click', () => {
+          this._handleOpenImage();
+      });
+      this._element.querySelector('.element__trash').addEventListener('click', () => {
+          this._handleCloseImage();
+      });
+      this._element.querySelector('.element__like').addEventListener('click', () => {
+          this._handlelike();
+      });
+  }
+  //для каждого обработчика
+  //для открытия попап картинки просмотра
+  _handleOpenImage () {
+      openImage(this._link, this._name);    
+  }
+  //переключатель лайка
+  _handlelike() {
+     this._element.querySelector('.element__like').classList.toggle('element__like_active');
+  }
+  //для удаления картинки
+  _handleCloseImage () {
+      this._element.querySelector('.element__trash').remove();
+  }    
+  //публичный метод, который возвращает полностью работоспособный и наполненный данными элемент карточки
+  generateCard() {
+      this._element = this._getTemplate();
+      this._setEventListeners();
+      this._element.querySelector('.element__mask-group').src = this._link;
+      this._element.querySelector('.element__mask-group').alt = this._name;
+      this._element.querySelector('.element__title').textContent = this._name;
+      
+      return this._element;
+  }
+
+}
+
 //функция для открытия просмотра попапа картинки
-function openImage(link, name) {
+ function openImage(link, name) {
+  openPopup(popupForImg);
   popupElImg.src = link;
   popupElImg.alt = name;
   popupElCaption.textContent = name;
-}   
-
-
+}
+  //для каждой карточки создаётся экземпляр класса
+initialCards.forEach((item) => {
+  const card = new Card(item.link, item.name, '.element-template');
+  const cardElement = card.generateCard();
+  document.querySelector('.groups__elements').prepend(cardElement);
+});
 
 
 
@@ -150,7 +205,6 @@ function openImage(link, name) {
     //return element;
 //}
 
-
 //function inserstCard(element) {
   //groupElement.prepend(createCard(element));  
 //}
@@ -162,10 +216,12 @@ function openImage(link, name) {
 // Обработчик «отправки» формы,
 function formForCardSubmitHandler (evt) {
     evt.preventDefault();
-    const card = {};
-    card.link = linkInput.value;
-    card.name = titleInput.value;
-    inserstCard(card);
+    //generateCard(this._link = linkInput.value, this._name = titleInput.value);
+    const cardAdd = new Card(linkInput.value, titleInput.value, '.element-template');
+    const cardElement = cardAdd.generateCard();
+    //card.link = linkInput.value;
+    //card.name = titleInput.value;
+    //inserstCard(card);
     closeIconPopup(popupForCard);
 }
 
