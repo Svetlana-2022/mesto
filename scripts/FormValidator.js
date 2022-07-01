@@ -22,7 +22,7 @@
             this._buttonElement.removeAttribute('disabled');
           }
     }
-    //TODO
+    
      //проверяет поля формы при открытие попапа
      isFormValid (inputList, buttonElement) {
       inputList.forEach((inputElement) => {

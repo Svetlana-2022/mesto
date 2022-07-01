@@ -23,11 +23,6 @@ const popupElCaption = popupForImg.querySelector('.popup__el-caption');
 const profileInfoTitle = document.querySelector('.profile__title');
 const profileInfoSubtitle = document.querySelector('.profile__subtitle');
 const groupElement = document.querySelector('.groups__elements');
-//const forms = document.querySelectorAll('.form');
-//const popupForEditValid = new FormValidator(formElementForEdit, formSettings);
-//popupForEditValid.enableValidation();
-//const popupForCardValid = new FormValidator(formElementForCard, formSettings);
-//popupForCardValid.enableValidation();
 
 
 function openPopup(popup) {
@@ -78,7 +73,6 @@ profileAddButton.addEventListener('click', () => {
   linkInput.value = '';
   titleInput.value = '';
   openPopup(popupForCard);
-  //TODO
   const popupForCardValid = new FormValidator(formElementForCard, formSettings);
   popupForCardValid.enableValidation();
   popupForCardValid.isFormValid([linkInput, titleInput], buttonForEdit);
