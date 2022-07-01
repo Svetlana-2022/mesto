@@ -1,4 +1,4 @@
-import { openImage } from './index';
+import { openImage } from './index.js';
 //создаёт карточку с текстом и ссылкой на изображение
 export class Card {
     //принимает в коструктор её данные и селектор её темплат-элемента
@@ -41,7 +41,7 @@ export class Card {
     }
     //для удаления картинки
     _handleCloseImage () {
-        this._element.querySelector('.element__trash').remove();
+        this._element.remove();
     }    
     //публичный метод, который возвращает полностью работоспособный и наполненный данными элемент карточки
     generateCard() {
