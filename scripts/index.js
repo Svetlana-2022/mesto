@@ -23,13 +23,6 @@ const profileInfoTitle = document.querySelector('.profile__title');
 const profileInfoSubtitle = document.querySelector('.profile__subtitle');
 const groupElement = document.querySelector('.groups__elements');
 
-//для каждой проверяемой формы создаётся экземпляр классса
-const forms = Array.from(document.querySelectorAll('.form'));
-forms.forEach((formElement) => {
-const form = new FormValidator(formElement, formSettings);
-form.enableValidation();
-});
-
 //для попапов создаются экземпляры классов
 const popupForEditValid = new FormValidator(formElementForEdit, formSettings);
 popupForEditValid.enableValidation();
