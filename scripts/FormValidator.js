@@ -12,6 +12,15 @@
         return !inputElement.validity.valid;
       });
     }
+    //проверяет поля формы при открытие попапа
+    resetValidation() {
+      this._toggleButtonState();
+      
+      this._inputList.forEach((inputElement) => {
+        this._hideInputError(inputElement);
+      });
+
+    }
     //переключает кнопку
     _toggleButtonState() {
         if(this._hasInvalidInput()) {
@@ -23,13 +32,6 @@
           }
     }
     
-     //проверяет поля формы при открытие попапа
-     isFormValid (inputList, buttonElement) {
-      inputList.forEach((inputElement) => {
-        inputElement.classList.contains(this._settings.inputErrorClass) && this._hideInputError(inputElement);
-          this._toggleButtonState(buttonElement);
-      });
-    }
     //показывает элемент ошибки
     _showInputError (inputElement, errorMessage) {
       this._errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
@@ -54,10 +56,7 @@
     }
     //обработчик всех полей
     _setEventListeners () {
-      const inputList = Array.from(this._formElement.querySelectorAll(this._settings.inputSelector));
-      this._buttonElement = this._formElement.querySelector(this._settings.submitButtonSelector);
-      this._toggleButtonState();
-      inputList.forEach((inputElement) => {
+      this._inputList.forEach((inputElement) => {
         inputElement.addEventListener('input', () => {
           this._isValid(inputElement);
           this._toggleButtonState();
@@ -66,7 +65,6 @@
     }
     //публичный метод который включает валидацию формы
     enableValidation() {
-        this._formElement.querySelector(this._settings.formSelector);
         this._setEventListeners();
     }  
 }
@@ -78,10 +76,5 @@ export const formSettings = {
   inputErrorClass: 'form__input_type_error',
   errorClass: 'form__input-error_active'
 }
-//для каждой проверяемой формы создаётся экземпляр классса
-const forms = Array.from(document.querySelectorAll('.form'));
-forms.forEach((formElement) => {
-const form = new FormValidator(formElement, formSettings);
-form.enableValidation();
-});
+
 

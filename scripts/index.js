@@ -1,6 +1,5 @@
 import { Card } from './Card.js';
-import { FormValidator } from './FormValidator.js';
-import { formSettings } from './FormValidator.js';
+import { FormValidator, formSettings } from './FormValidator.js';
 const popups = document.querySelectorAll('.popup');
 const popupForEdit = document.querySelector('.popup_for_edit');
 const formElementForEdit = popupForEdit.querySelector('.form_for_edit');
@@ -24,69 +23,77 @@ const profileInfoTitle = document.querySelector('.profile__title');
 const profileInfoSubtitle = document.querySelector('.profile__subtitle');
 const groupElement = document.querySelector('.groups__elements');
 
+//для каждой проверяемой формы создаётся экземпляр классса
+const forms = Array.from(document.querySelectorAll('.form'));
+forms.forEach((formElement) => {
+const form = new FormValidator(formElement, formSettings);
+form.enableValidation();
+});
+
+//для попапов создаются экземпляры классов
+const popupForEditValid = new FormValidator(formElementForEdit, formSettings);
+popupForEditValid.enableValidation();
+const popupForCardValid = new FormValidator(formElementForCard, formSettings);
+popupForCardValid.enableValidation();
 
 function openPopup(popup) {
     popup.classList.add('popup_opened');
-    document.addEventListener('keydown', haldeEscKeydown);    
+    document.addEventListener('keydown', handleEscKeydown);    
 }
 
-function closeIconPopup(popup) {
+function closePopup(popup) {
   popup.classList.remove('popup_opened');
-  document.removeEventListener('keydown',haldeEscKeydown);
+  document.removeEventListener('keydown',handleEscKeydown);
 }
 
-const haldeEscKeydown = (evt) => {
+const handleEscKeydown = (evt) => {
   if(evt.key ==="Escape") {
-    closeIconPopup(document.querySelector('.popup_opened'));
+    closePopup(document.querySelector('.popup_opened'));
   }
 }
 
-const haldeOverlay = (evt) => {
-  if(evt.target === evt.currentTarget) {
-    closeIconPopup(evt.target);
-  }
+const handleOverlay = (evt) => {
+  if (evt.target === evt.currentTarget) {
+    closePopup(evt.target);
+}
 }
 popups.forEach((popup) => {
-  popup.addEventListener('click', haldeOverlay);
+  popup.addEventListener('mousedown', handleOverlay);
 });
 
 popupCloseIconForEdit.addEventListener('click', () => {
-  closeIconPopup(popupForEdit);
+  closePopup(popupForEdit);
 });
 popupCloseIconForCard.addEventListener('click', () =>{
-  closeIconPopup(popupForCard);
+  closePopup(popupForCard);
 });
 popupCloseIconForImg.addEventListener('click', () =>{
-  closeIconPopup(popupForImg);
+  closePopup(popupForImg);
 });
 
 profileEditButton.addEventListener('click', () => {
   openPopup(popupForEdit);
   nameInput.value = profileInfoTitle.textContent;
   jobInput.value = profileInfoSubtitle.textContent;
-  const popupForEditValid = new FormValidator(formElementForEdit, formSettings);
-  popupForEditValid.enableValidation();
-  popupForEditValid.isFormValid([nameInput, jobInput], buttonForCard);
+  popupForEditValid.resetValidation();
 });
 
 profileAddButton.addEventListener('click', () => {
-  linkInput.value = '';
-  titleInput.value = '';
   openPopup(popupForCard);
-  const popupForCardValid = new FormValidator(formElementForCard, formSettings);
-  popupForCardValid.enableValidation();
-  popupForCardValid.isFormValid([linkInput, titleInput], buttonForEdit);
+  formElementForCard.reset();
+  popupForCardValid.resetValidation();
 });
 
 // Обработчик «отправки» формы,
-function formSubmitHandler (evt) {
+function handleProfileFormSubmit (evt) {
     evt.preventDefault();
     profileInfoTitle.textContent = nameInput.value;
     profileInfoSubtitle.textContent = jobInput.value;
-    closeIconPopup(popupForEdit);
+    console.log('word');
+    closePopup(popupForEdit);
     
 }
-formElementForEdit.addEventListener('submit', formSubmitHandler);
+formElementForEdit.addEventListener('submit', handleProfileFormSubmit);
 
 const initialCards = [
     {
@@ -115,28 +122,41 @@ const initialCards = [
     }
   ];
 
+
 //функция для открытия просмотра попапа картинки
-export function openImage (link, name) {
+export function handleCardClick (link, name) {
   openPopup(popupForImg);
   popupElImg.src = link;
   popupElImg.alt = name;
   popupElCaption.textContent = name;
 }
   //для каждой карточки создаётся экземпляр класса
+
+function createCard(item) {
+  const card = new Card(item.link, item.name, '.element-template', handleCardClick);
+  const cardEl = card.generateCard();
+  return cardEl;
+}
+
+function renderCard(item) {
+  groupElement.prepend(createCard(item));
+}
+
 initialCards.forEach((item) => {
-  const card = new Card(item.link, item.name, '.element-template');
-  const cardElement = card.generateCard();
-  groupElement.prepend(cardElement);
+  renderCard(item); 
 });
 
 // Обработчик «отправки» формы, для карточки
-function formForCardSubmitHandler (evt) {
-    evt.preventDefault();
-    const cardNew = new Card(linkInput.value, titleInput.value, '.element-template');
-    const cardElementNew = cardNew.generateCard();
-    groupElement.prepend(cardElementNew);
-    
-    closeIconPopup(popupForCard);
+
+function handleForCardFormSubmit (evt) {
+  evt.preventDefault();
+  const item = {};
+  item.link = linkInput.value;
+  item.name = titleInput.value;
+
+  renderCard(item);
+  closePopup(popupForCard);
+
 }
 
-formElementForCard.addEventListener('submit', formForCardSubmitHandler);
+formElementForCard.addEventListener('submit', handleForCardFormSubmit);

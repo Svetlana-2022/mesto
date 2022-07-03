@@ -1,11 +1,12 @@
-import { openImage } from './index.js';
+import { handleCardClick } from './index.js';
 //создаёт карточку с текстом и ссылкой на изображение
 export class Card {
     //принимает в коструктор её данные и селектор её темплат-элемента
-    constructor(link, name, templateSelector) {
+    constructor(link, name, templateSelector, handleCardClick) {
         this._link = link;
         this._name = name;
         this._templateSelector = templateSelector;
+        this._handleCardClick = handleCardClick;
     }
     
     //содержит приватные методы, 
@@ -20,36 +21,36 @@ export class Card {
     }
     //устанавливают слушатели событий
     _setEventListeners() {
-        this._element.querySelector('.element__mask-group').addEventListener('click', () => {
-            this._handleOpenImage();
+        this._cardImage = this._element.querySelector('.element__mask-group');
+        this._cardImage.addEventListener('click', () => {
+            this._handleCardClick(this._link, this._name);
         });
-        this._element.querySelector('.element__trash').addEventListener('click', () => {
-            this._handleCloseImage();
+        this._cardTrash = this._element.querySelector('.element__trash');
+        this._cardTrash.addEventListener('click', () => {
+            this._handleDeleteCard();
         });
-        this._element.querySelector('.element__like').addEventListener('click', () => {
+        this._likeButton = this._element.querySelector('.element__like');
+        this._likeButton.addEventListener('click', () => {
             this._handlelike();
         });
     }
     //для каждого обработчика
-    //для открытия попап картинки просмотра
-    _handleOpenImage () {
-        openImage(this._link, this._name);    
-    }
     //переключатель лайка
-    _handlelike() {
-       this._element.querySelector('.element__like').classList.toggle('element__like_active');
+    _handlelike() { 
+       this._likeButton.classList.toggle('element__like_active');
     }
     //для удаления картинки
-    _handleCloseImage () {
+    _handleDeleteCard () {
         this._element.remove();
     }    
     //публичный метод, который возвращает полностью работоспособный и наполненный данными элемент карточки
     generateCard() {
         this._element = this._getTemplate();
         this._setEventListeners();
-        this._element.querySelector('.element__mask-group').src = this._link;
-        this._element.querySelector('.element__mask-group').alt = this._name;
-        this._element.querySelector('.element__title').textContent = this._name;
+        this._cardImage.src = this._link;
+        this._cardImage.alt = this._name;
+        this._cardTitle = this._element.querySelector('.element__title');
+        this._cardTitle.textContent = this._name;
         
         return this._element;
     }
