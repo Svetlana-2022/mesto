@@ -117,7 +117,7 @@ const initialCards = [
 
 
 //функция для открытия просмотра попапа картинки
-export function handleCardClick (link, name) {
+ function handleCardClick (link, name) {
   openPopup(popupForImg);
   popupElImg.src = link;
   popupElImg.alt = name;
@@ -126,18 +126,20 @@ export function handleCardClick (link, name) {
   //для каждой карточки создаётся экземпляр класса
 
 function createCard(item) {
-  const card = new Card(item.link, item.name, '.element-template', handleCardClick);
+  const card = new Card(
+    item.link, 
+    item.name, 
+    '.element-template', 
+    handleCardClick
+  );
   const cardEl = card.generateCard();
   return cardEl;
 }
-
+//функция вставки карточки
 function renderCard(item) {
   groupElement.prepend(createCard(item));
 }
 
-initialCards.forEach((item) => {
-  renderCard(item); 
-});
 
 // Обработчик «отправки» формы, для карточки
 
@@ -149,7 +151,11 @@ function handleForCardFormSubmit (evt) {
 
   renderCard(item);
   closePopup(popupForCard);
-
 }
 
+initialCards.forEach((item) => {
+  renderCard(item); 
+});
+
 formElementForCard.addEventListener('submit', handleForCardFormSubmit);
+
