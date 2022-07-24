@@ -1,10 +1,9 @@
-import { handleCardClick } from './index.js';
 //создаёт карточку с текстом и ссылкой на изображение
 export class Card {
     //принимает в коструктор её данные и селектор её темплат-элемента
-    constructor(link, name, templateSelector, handleCardClick) {
-        this._link = link;
-        this._name = name;
+    constructor(data, templateSelector, handleCardClick) {
+        this._link = data.link;
+        this._name = data.name;
         this._templateSelector = templateSelector;
         this._handleCardClick = handleCardClick;
     }
