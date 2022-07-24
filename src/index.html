@@ -7,17 +7,17 @@
     </head>
     <body class="page">
         <header class="header">
-            <img class="header__logo" src="./images/Vector(1).svg" alt="логотип">
+            <img class="header__logo" src="<%= require('./images/Vector(1).svg')%>" alt="логотип">
         </header>
         <main class="content">
             <section class="profile">
-                <img class="profile__avatar" src="./images/image.jpg" alt="Кусто">
+                <img class="profile__avatar" src="<%= require('./images/image.jpg')%>" alt="Кусто">
                 <div class="profile__info">
                     <h1 class="profile__title">Жак-Ив Кусто</h1>
-                    <button type="button" class="profile__edit-button"></button>
+                    <button type="button" class="profile__edit-button"  style="background-image: url(<%=require('./images/Vector\(2\).svg')%>)"></button>
                     <p class="profile__subtitle">Исследователь океана</p>
                 </div>
-                <button type="button" class="profile__add-button"></button>
+                <button type="button" class="profile__add-button" style="background-image: url(<%=require('./images/Vector\(4\).svg')%>)"></button>
             </section>
             <section class="groups">
                 <ul class="groups__elements">
@@ -30,11 +30,11 @@
         </footer>
         <template class="element-template">
             <li class="element">
-                <button type="button" class="element__trash"></button>
+                <button type="button" class="element__trash" style="background-image: url(<%= require('./images/Trash.svg')%>)"></button>
                 <img class="element__mask-group" src="#" alt="фото">
                 <div class="element__container">
                     <h2 class="element__title"></h2>
-                    <button type="button" class="element__like"></button>
+                    <button type="button" class="element__like" style="background-image: url(<%= require('./images/Vector\(Stroke\).svg') %>)"></button>
                 </div>
             </li> 
         </template>
