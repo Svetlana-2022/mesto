@@ -1,12 +1,12 @@
-//import './pages/index.css';
-import { Card } from './Card.js';
-import { Section } from './Section.js';
-import Popup from './Popup.js';
-import PopupWithImage from './PopupWithImage.js';
-import PopupWithForm from './PopupWithForm.js';
-import UserInfo from './UserInfo.js';
-import { FormValidator, formSettings } from './FormValidator.js';
-import { initialCards } from './initial-cards.js';
+//import './index.css';
+import { Card } from '../components/Card.js';
+import { Section } from '../components/Section.js';
+import Popup from '../components/Popup.js';
+import PopupWithImage from '../components/PopupWithImage.js';
+import PopupWithForm from '../components/PopupWithForm.js';
+import UserInfo from '../components/UserInfo.js';
+import { FormValidator, formSettings } from '../components/FormValidator.js';
+import { initialCards } from '../components/initial-cards.js';
 
 const popupForEdit = document.querySelector('.popup_for_edit');
 const formElementForEdit = popupForEdit.querySelector('.form_for_edit');
@@ -87,4 +87,3 @@ const formSubmitCard = new PopupWithForm({
   }
 });
 formSubmitCard.setEventListeners();
-
