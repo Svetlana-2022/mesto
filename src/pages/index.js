@@ -20,11 +20,7 @@ const popupForEditValid = new FormValidator(formElementForEdit, formSettings);
 popupForEditValid.enableValidation();
 const popupForCardValid = new FormValidator(formElementForCard, formSettings);
 popupForCardValid.enableValidation();
-//для закрытия, открытия попапов экземпляры классов
-//const forEditPopup = new Popup('.popup_for_edit');
-//forEditPopup.setEventListeners();
-//const forCardPopup = new Popup('.popup_for_card');
-//forCardPopup.setEventListeners();
+
 //обработчик слушателя карточки
 profileAddButton.addEventListener('click', () => {
   formSubmitCard.open();
@@ -52,11 +48,6 @@ profileEditButton.addEventListener('click', () => {
   popupForEditValid.resetValidation();
 });
 
-
-//для закрытия попапов картинки экземпляр класса
-//const forImagePopup = new Popup('.popup_for_img');
-//forImagePopup.setEventListeners();
-
 //функция для открытия просмотра попапа картинки
 function handleCardClick (link, name) {
   const popupImage = new PopupWithImage('.popup_for_img');
@@ -73,10 +64,6 @@ function createCard(item) {
 const cardList = new Section({
   items: initialCards,
   renderer: (cardItem) => {
-    //console.log(cardItem);
-    //console.log(createCard(cardItem));
-    //const card = new Card(cardItem, '.element-template', handleCardClick);
-    //const cardEl = card.generateCard();
     cardList.addItem(createCard(cardItem));
   }
 },
@@ -88,10 +75,7 @@ cardList.renderItems();
 const formSubmitCard = new PopupWithForm({
   popupSelector: '.popup_for_card',
   handleSubmit: ({linkCard, nameCard}) => {
-    //createCard({link: linkCard, name: nameCard});
     console.log(createCard({link: linkCard, name: nameCard}));
-    //const cardNew = new Card({link: linkCard, name: nameCard}, '.element-template', handleCardClick);
-    //const cardElNew = cardNew.generateCard();
     cardList.addItem(createCard({link: linkCard, name: nameCard}));
     formSubmitCard.close();
   }

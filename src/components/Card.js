@@ -37,8 +37,6 @@ export class Card {
     //переключатель лайка
     _handlelike() { 
        this._likeButton.classList.toggle('element__like_active');
-       console.log('element__like_active');
-       console.log(this._likeButton);
     }
     //для удаления картинки
     _handleDeleteCard () {

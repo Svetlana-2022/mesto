@@ -1,4 +1,5 @@
 .element__like {
+    background-image: url(../../../images/Like-activ.svg);
     background-color: #fff;
     width: 22px;
     height: 19px;
