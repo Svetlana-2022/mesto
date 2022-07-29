@@ -15,7 +15,6 @@ export default class Popup {
     _handleEscClose(evt) {
         if(evt.key ==="Escape") {
             this.close(document.querySelector('.popup_opened'));
-            console.log(evt.key);
         }
     }
     //добавляет слушатель икопке закрытия попапа
