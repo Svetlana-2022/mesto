@@ -47,10 +47,10 @@ profileEditButton.addEventListener('click', () => {
   formSubmitProfile.open();
   popupForEditValid.resetValidation();
 });
-
+//экземпляр для просмотра картинки
+const popupImage = new PopupWithImage('.popup_for_img');
 //функция для открытия просмотра попапа картинки
 function handleCardClick (link, name) {
-  const popupImage = new PopupWithImage('.popup_for_img');
   popupImage.open({data: {link, name} });
   popupImage.setEventListeners();
 }
