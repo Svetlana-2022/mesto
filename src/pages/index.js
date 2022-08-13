@@ -99,16 +99,17 @@ const config = {
   }
 }
 const api = new Api(config);
-
+// так правильно ли?
 api.getInitialCards().then((items) => {
-  return items;//массив карточек,  которые я пытаюсь передать в экземпляр класса??
-
+  items.forEach((item) => {
+    cardList.addItem(createCard(item));
+  });
   console.log(items);
   }).catch((err) => console.log(err));
   
   //для каждой карточки создаётся экземпляр класса
   const cardList = new Section({
-  items: items,
+  items: [],
     renderer: (cardItem) => {
       cardList.addItem(createCard(cardItem));
     }
