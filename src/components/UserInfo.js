@@ -1,8 +1,10 @@
  //управляет отображением информации о пользователе на странице
  export default class UserInfo {
-    constructor({ nameSelector, jobSelector }) {
+    constructor({ nameSelector, jobSelector, avatarSelector}) {
         this._userName = document.querySelector(nameSelector);
         this._userJob = document.querySelector(jobSelector);
+        this._avatar = document.querySelector(avatarSelector);
+
     }
     //возвращает объект с данными пользователя
     getUserInfo() {
@@ -15,6 +17,9 @@
     //принимает новые данные пользователя и добавляет их на страницу
     setUserInfo({nameInput, jobInput}) {
         this._userName.textContent = nameInput;
-        this._userJob.textContent = jobInput;  
+        this._userJob.textContent = jobInput; 
+    }
+    setUserInfoAvatar({ avatar}) {
+        this._avatar.src = avatar; 
     }
 }

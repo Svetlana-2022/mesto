@@ -1,11 +1,10 @@
 import Popup from "./Popup.js";
-export default class PopupWithForm extends Popup {
-    constructor({ popupSelector, handleSubmit, handleFormPreFill }) {
+export default class PopupWithFormAvatar extends Popup {
+    constructor({ popupSelector, handleSubmit, }) {
         super(popupSelector);
         this._handleSubmit = handleSubmit;
         this._inputList = this._popupSelector.querySelectorAll('.form__input');
         Array.from(this._inputList);
-        this._handleFormPreFill = handleFormPreFill;
 
     }
     //собирает данные всех полей
@@ -23,14 +22,12 @@ export default class PopupWithForm extends Popup {
         this._form = this._popupSelector.querySelector('.form');
         this._form.addEventListener('submit', (evt) => {
             evt.preventDefault();
+            //использовать метод апи редактирования пользователя?
             this._handleSubmit(this._getInputValues());
             this.close();
         })
     }
     open() {
-        if(this._handleFormPreFill) {
-           this._handleFormPreFill(this._inputList);
-        }
         super.open();
     }
     close() {
