@@ -15,9 +15,10 @@
         return this.userData; 
     }
     //принимает новые данные пользователя и добавляет их на страницу
-    setUserInfo({nameInput, jobInput}) {
+    setUserInfo({nameInput, jobInput, _id}) {
         this._userName.textContent = nameInput;
-        this._userJob.textContent = jobInput; 
+        this._userJob.textContent = jobInput;
+        this._id = _id; 
     }
     setUserInfoAvatar({ avatar}) {
         this._avatar.src = avatar; 

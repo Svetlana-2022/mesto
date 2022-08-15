@@ -5,7 +5,7 @@ export class Api {
     }
 
     //метод загрузки информации о пользователе с сервера
-    userInfo() {
+    getUserInfo() {
       return fetch(`${this._url}users/me`, { headers: this._headers}).then((res) => {
         if(res.ok) {
           return res.json();
@@ -14,16 +14,16 @@ export class Api {
         }
       });
     }
-     //метод редактирования профиля
-    profileInfo({ name, about }) {
+     //метод редактирования профиля пользователя
+    updateProfileInfo({ name, about }) {
       return fetch(`${this._url}users/me`, {
         method: "PATCH",
         headers: this._headers,
         body: JSON.stringify({ name, about })
       }).then(res => res.ok ? res.json() : Promise.reject(`Ошибка ${res.status}`));
     }
-     //метод редактирования профиля
-    profileAvatar({ avatar }) {
+     //метод редактирования профиля аватара
+    updateProfileAvatar({ avatar }) {
       return fetch(`${this._url}users/me`, {
         method: "PATCH",
         headers: this._headers,

@@ -22,7 +22,6 @@ export default class PopupWithFormAvatar extends Popup {
         this._form = this._popupSelector.querySelector('.form');
         this._form.addEventListener('submit', (evt) => {
             evt.preventDefault();
-            //использовать метод апи редактирования пользователя?
             this._handleSubmit(this._getInputValues());
             this.close();
         })

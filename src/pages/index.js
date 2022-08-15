@@ -28,20 +28,23 @@ function handleDelClick() {
   popupForDel.setEventListeners();
 }
 
+//обработчик слушателя avatar
 avatar.addEventListener('click', handleAvatarClick);
-//экземпляр класса для открытия попапа avatar
-//const popupForAvatar = new Popup('.popup_for_avatar');
+
 //функция для открытия попапа avatar
 function handleAvatarClick() {
   formSubmitAvatar.open();
-  //popupForAvatar.open();
-   //popupForAvatar.setEventListeners();
 }
 //для формы аватара экземпляр класса
 const formSubmitAvatar = new PopupWithFormAvatar({
   popupSelector: '.popup_for_avatar',
   handleSubmit: ({avatar}) => {
-    userInfo.setUserInfoAvatar({avatar});
+    api.updateProfileAvatar({ avatar: avatar }).then((res) => {
+      userInfo.setUserInfoAvatar({avatar: res.avatar});//ПРОБЛЕМА
+      console.log(res);
+      console.log({avatar: res.avatar});
+    }).catch((err) => console.log(err));
+    
   }
 });
 formSubmitAvatar.setEventListeners();
@@ -65,7 +68,10 @@ const userInfo = new UserInfo({nameSelector: '.profile__title', jobSelector: '.p
 const formSubmitProfile = new PopupWithForm({
   popupSelector: '.popup_for_edit',
   handleSubmit: ({nameInput, jobInput}) => {
-    userInfo.setUserInfo({nameInput, jobInput});
+    api.updateProfileInfo({ name: nameInput, about: jobInput }).then((res) => {
+      userInfo.setUserInfo({nameInput: res.name, jobInput: res.about});
+      console.log({nameInput: res.name, jobInput: res.about});
+    }).catch((err) => console.log(err));
   },
   handleFormPreFill: (inputs) => {
     const values = userInfo.getUserInfo();
@@ -91,6 +97,16 @@ function createCard(item) {
   const cardEl = card.generateCard();
   return cardEl;
 }
+//для каждой карточки создаётся экземпляр класса
+const cardList = new Section({
+  renderer: (cardItem) => {
+    cardList.addItem(createCard(cardItem));
+  }
+},
+'.groups__elements'
+);
+//cardList.renderItems(items);
+
 const config = {
   url: 'https://mesto.nomoreparties.co/v1/cohort-46/',
   headers: {
@@ -99,44 +115,45 @@ const config = {
   }
 }
 const api = new Api(config);
-// так правильно ли?
+// загрузка карточек с сервера
 api.getInitialCards().then((items) => {
-  items.forEach((item) => {
-    cardList.addItem(createCard(item));
-  });
+  cardList.renderItems(items);
   console.log(items);
   }).catch((err) => console.log(err));
-  
-  //для каждой карточки создаётся экземпляр класса
-  const cardList = new Section({
-  items: [],
-    renderer: (cardItem) => {
-      cardList.addItem(createCard(cardItem));
-    }
-  },
-  '.groups__elements',
-  api
-  );
-  cardList.renderItems();
+    
 //создаём экземпляр формы для карточки
 const formSubmitCard = new PopupWithForm({
   popupSelector: '.popup_for_card',
   handleSubmit: ({linkCard, nameCard}) => {
-    cardList.addItem(createCard({link: linkCard, name: nameCard}));
+    api.addCard({link: linkCard, name: nameCard}).then((res) => {
+      cardList.addItem(createCard(res));
+      //console.log(res);
+    }).catch((err) => console.log(err));
+    //cardList.addItem(createCard({link: linkCard, name: nameCard}));
     formSubmitCard.close();
   }
 });
 formSubmitCard.setEventListeners();
 
- api.userInfo().then((result) => {
+
+// загрузка информации о пользователе с сервера
+ api.getUserInfo().then((result) => {
    let nameInput = result.name;
    let jobInput = result.about;
    let avatar = result.avatar;
    userInfo.setUserInfo({nameInput, jobInput});
    userInfo.setUserInfoAvatar({avatar});
-   console.log(result);
+   //console.log(result);
  }).catch((err) => console.log(err));
- api.profileInfo({ name: 'Marie Skłodowska Curie', about: 'Physicist and Chemist' }).catch((err) => console.log(err));
+ //id- пользователя -- как вывести в константу
+ //const idUserOwner =
+  api.getUserInfo().then((res) => {
+    userInfo.setUserInfo(res);
+    console.log(res);
+    console.log(res._id);
+  }).catch((err) => console.log(err));
+
+//const idUserOwner =
 
 //  fetch('https://nomoreparties.co/v1/cohort-46/users/me', {
 //    headers: {

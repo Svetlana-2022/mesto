@@ -73,7 +73,6 @@ export class Card {
         // if(this._id) {
         //     this._cardTrash.remove();
         // }
-        
         return this._element;
     }
 
