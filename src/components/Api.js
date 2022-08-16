@@ -23,7 +23,7 @@ export class Api {
       }).then(res => res.ok ? res.json() : Promise.reject(`Ошибка ${res.status}`));
     }
      //метод редактирования профиля аватара
-    updateProfileAvatar({ avatar }) {
+    updateProfileAvatar = ({ avatar }) => {
       return fetch(`${this._url}users/me`, {
         method: "PATCH",
         headers: this._headers,

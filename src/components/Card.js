@@ -32,8 +32,7 @@ export class Card {
         });
         this._cardTrash = this._element.querySelector('.element__trash');
         this._cardTrash.addEventListener('click', () => {
-            this._handleDelClick();
-           //this._handleDeleteCard();
+            this._handleDelClick(this._handleDeleteCard);
         });
         this._likeButton = this._element.querySelector('.element__like');
         this._likeButton.addEventListener('click', () => {
@@ -52,7 +51,7 @@ export class Card {
     }
 
     //для удаления картинки
-    _handleDeleteCard () {
+    _handleDeleteCard () {//нужно _id???
         this._api.deleteCard(this._id)
         .then(() =>{
             this._element.remove();

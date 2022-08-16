@@ -19,11 +19,13 @@ const formElementForCard = popupForCard.querySelector('.form_for_card');
 const elementTrash = document.querySelector('.element__trash');
 const popupDel = document.querySelector('.popup_for_delete');
 const avatar = document.querySelector('.profile__avatar');
+const deleteButton = document.querySelector('.form__submit-button_for_delete');
 
 //экземпляр класса для открытия попапа удаления
 const popupForDel = new Popup('.popup_for_delete');
 //функция для открытия попапа удаления
-function handleDelClick() {
+function handleDelClick(delCallback) {
+  deleteButton.addEventListener('click', delCallback);
   popupForDel.open();
   popupForDel.setEventListeners();
 }
@@ -39,6 +41,7 @@ function handleAvatarClick() {
 const formSubmitAvatar = new PopupWithFormAvatar({
   popupSelector: '.popup_for_avatar',
   handleSubmit: ({avatar}) => {
+    console.log({avatar});
     api.updateProfileAvatar({ avatar: avatar }).then((res) => {
       userInfo.setUserInfoAvatar({avatar: res.avatar});//ПРОБЛЕМА
       console.log(res);
@@ -118,7 +121,7 @@ const api = new Api(config);
 // загрузка карточек с сервера
 api.getInitialCards().then((items) => {
   cardList.renderItems(items);
-  console.log(items);
+  //console.log(items);
   }).catch((err) => console.log(err));
     
 //создаём экземпляр формы для карточки
@@ -149,8 +152,8 @@ formSubmitCard.setEventListeners();
  //const idUserOwner =
   api.getUserInfo().then((res) => {
     userInfo.setUserInfo(res);
-    console.log(res);
-    console.log(res._id);
+    //console.log(res);
+    //console.log(res._id);
   }).catch((err) => console.log(err));
 
 //const idUserOwner =
