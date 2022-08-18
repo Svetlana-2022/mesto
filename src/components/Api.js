@@ -23,8 +23,8 @@ export class Api {
       }).then(res => res.ok ? res.json() : Promise.reject(`Ошибка ${res.status}`));
     }
      //метод редактирования профиля аватара
-    updateProfileAvatar = ({ avatar }) => {
-      return fetch(`${this._url}users/me`, {
+    updateProfileAvatar({ avatar }) {
+      return fetch(`${this._url}users/me/avatar`, {
         method: "PATCH",
         headers: this._headers,
         body: JSON.stringify({ avatar })
@@ -59,14 +59,14 @@ export class Api {
     }
   
     //метод  постановки лайка карточки
-    likeCard() {
-      return fetch(`${this._url}cards/${id}/${likes}`, {
+    likeCard = (id) => {
+      return fetch(`${this._url}cards/${id}/likes`, {
         method: "PUT",
         headers: this._headers
       }).then(res => res.ok ? res.json() : Promise.reject(`Ошибка ${res.status} ${res.statusText}`));
     }
     //метод снятия лайка
-    inLikeCard() {
+    inLikeCard = (id) => {
       return fetch(`${this._url}cards/${id}/likes`, {
         method: "DELETE",
         headers: this._headers
