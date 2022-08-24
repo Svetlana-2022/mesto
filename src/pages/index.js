@@ -8,7 +8,6 @@ import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithFormAvatar from '../components/PopupWithFormAvatar.js';
 import UserInfo from '../components/UserInfo.js';
 import { FormValidator, formSettings } from '../components/FormValidator.js';
-import { initialCards } from '../components/initial-cards.js';
 
 const popupForEdit = document.querySelector('.popup_for_edit');
 const formElementForEdit = popupForEdit.querySelector('.form_for_edit');
@@ -16,30 +15,45 @@ const profileEditButton = document.querySelector('.profile__edit-button');
 const profileAddButton = document.querySelector('.profile__add-button');
 const popupForCard = document.querySelector('.popup_for_card');
 const formElementForCard = popupForCard.querySelector('.form_for_card');
-const elementTrash = document.querySelector('.element__trash');
-const popupDel = document.querySelector('.popup_for_delete');
-const avatar = document.querySelector('.profile__avatar');
+const avatar = document.querySelector('.profile__hover-avatar');
+const formElementForAvatar = popupForCard.querySelector('.form_for_avatar');
 const deleteButton = document.querySelector('.form__submit-button_for_delete');
+const config = {
+  url: 'https://mesto.nomoreparties.co/v1/cohort-46/',
+  headers: {
+    authorization: '30876ae6-9c71-4f9d-a726-3e14bc235ea6',
+    'Content-Type': 'application/json'
+  }
+}
 
 //для попапов создаются экземпляры классов валидации
 const popupForEditValid = new FormValidator(formElementForEdit, formSettings);
 popupForEditValid.enableValidation();
 const popupForCardValid = new FormValidator(formElementForCard, formSettings);
 popupForCardValid.enableValidation();
+//const popupForAvatarValid = new FormValidator(formElementForAvatar, formSettings);
+//popupForAvatarValid.enableValidation();//ПРОБЛЕМА'querySelectorAll'--null
 
+//экземпляр класса работы с сервером: Api
+const api = new Api(config);
+
+ //функция объединяющая промисолы карточек и информации о пользователе с сервера
+ const allPromise = () => {
+  Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then(([resUser, resCards]) => {
+    console.log(resUser);
+    let nameInput = resUser.name;
+    let jobInput = resUser.about;
+    let _id = resUser._id;
+   userInfo.setUserInfo({nameInput, jobInput, _id});
+   userInfo.setUserInfoAvatar(resUser);
+   cardList.renderItems(resCards);
+   
+  }).catch((err) => console.log(err));
+}  
+allPromise();
 //экземпляр класса для открытия попапа удаления
 const popupForDel = new Popup('.popup_for_delete');
-//функция для открытия попапа удаления
-function handleDelClick(id) {
-  deleteButton.addEventListener('click', () =>{
-    api.deleteCard(id)
-      .then(() =>{
-          this._element.remove();
-      }).catch(err => console.log(err));
-  });
-  popupForDel.open();
-  popupForDel.setEventListeners();
-}
 
 //обработчик слушателя avatar
 avatar.addEventListener('click', handleAvatarClick);
@@ -47,18 +61,15 @@ avatar.addEventListener('click', handleAvatarClick);
 //функция для открытия попапа avatar
 function handleAvatarClick() {
   formSubmitAvatar.open();
+  //popupForAvatarValid.resetValidation();//ПРОБЛЕМА--с 34
 }
 //для формы аватара экземпляр класса
 const formSubmitAvatar = new PopupWithFormAvatar({
   popupSelector: '.popup_for_avatar',
   handleSubmit: ({avatar}) => {
-    console.log({avatar});
     api.updateProfileAvatar({ avatar: avatar }).then((res) => {
       userInfo.setUserInfoAvatar({avatar: res.avatar});
-      console.log(res);
-      //console.log({avatar: res.avatar});
-    }).catch((err) => console.log(err));
-    
+    }).catch((err) => console.log(err)); 
   }
 });
 formSubmitAvatar.setEventListeners();
@@ -79,7 +90,6 @@ const formSubmitProfile = new PopupWithForm({
     console.log({nameInput, jobInput});
     api.updateProfileInfo({ name: nameInput, about: jobInput }).then((res) => {
       userInfo.setUserInfo({nameInput: res.name, jobInput: res.about});
-      console.log({nameInput: res.name, jobInput: res.about});
     }).catch((err) => console.log(err));
   },
   handleFormPreFill: (inputs) => {
@@ -104,34 +114,43 @@ function handleCardClick (link, name) {
 const handleIsOwner = (el) => {
   return userInfo._id === el;
 }
-//функция проверки лайков 
-const handleIsLike = (el) => {
-  return el.some((item) => {
-    //console.log(item._id);
-    return userInfo._id === item._id;
-  });
-}
-//функция лайков
-const handleLikesCard = (id) => {
-  if(card.isLike) {
-    api.likeCard(id).this((res) => {
-      card.addLike();
-      card.setLike(res.likes);
-    }).catch((err) => console.log(err));
-  } else {
-    api.inLikeCard(id).then((res) => {
-      card.deleteLike();
-      card.setLike(res.likes);
-    }).catch((err) => console.log(err));
-  }
-}
 
 //функция возвращает готовую карточку
 function createCard(item) {
-  const card = new Card(item, '.element-template', handleCardClick, handleDelClick, handleIsOwner, handleIsLike, handleLikesCard);
+  item.currentUser = userInfo;
+  const card = new Card(item, '.element-template', 
+  { handleCardClick, 
+   handleDelClick: (data) => {
+     popupForDel.open();
+     popupForDel.setEventListeners();
+     deleteButton.addEventListener('click', () =>{
+       api.deleteCard(data._id).then(() =>{
+          card.handleDeleteCard();
+          popupForDel.close();
+         }).catch(err => console.log(err));
+     });
+   }, 
+  handleIsOwner,  
+  handleLikesCard: (data) => {
+    if(card.isLiked()) {
+      console.log(card.isLiked());
+      api.inLikeCard(data._id).then((res) => {
+        card.deleteLike();
+        card.setLike(res.likes);
+      }).catch((err) => console.log(err));
+    } else {
+      console.log('cardId', data._id); 
+      api.likeCard(data._id).then((res) => {
+        card.addLike();
+        card.setLike(res.likes);
+      }).catch((err) => console.log(err));
+    }
+  } 
+});
   const cardEl = card.generateCard();
   return cardEl;
 }
+
 //для каждой карточки создаётся экземпляр класса
 const cardList = new Section({
   renderer: (cardItem) => {
@@ -140,21 +159,6 @@ const cardList = new Section({
 },
 '.groups__elements'
 );
-//cardList.renderItems(items);
-
-const config = {
-  url: 'https://mesto.nomoreparties.co/v1/cohort-46/',
-  headers: {
-    authorization: '30876ae6-9c71-4f9d-a726-3e14bc235ea6',
-    'Content-Type': 'application/json'
-  }
-}
-const api = new Api(config);
-// загрузка карточек с сервера
-// api.getInitialCards().then((items) => {
-//   cardList.renderItems(items);
-//   //console.log(items);
-//   }).catch((err) => console.log(err));
     
 //создаём экземпляр формы для карточки
 const formSubmitCard = new PopupWithForm({
@@ -162,98 +166,9 @@ const formSubmitCard = new PopupWithForm({
   handleSubmit: ({linkCard, nameCard}) => {
     api.addCard({link: linkCard, name: nameCard}).then((res) => {
       cardList.addItem(createCard(res));
-      //console.log(res);
     }).catch((err) => console.log(err));
     formSubmitCard.close();
   }
 });
-formSubmitCard.setEventListeners();
-
-
-// загрузка информации о пользователе с сервера
- api.getUserInfo().then((result) => {
-   let nameInput = result.name;
-   let jobInput = result.about;
-   let avatar = result.avatar;
-   userInfo.setUserInfo({nameInput, jobInput});
-   userInfo.setUserInfoAvatar({avatar});
-   //console.log(result);
- }).catch((err) => console.log(err));
-
- //функция объединяющая промисолы карточек и информации о пользователе с сервера
-  const allPromise = () => {
-  Promise.all([api.getUserInfo(), api.getInitialCards()])
-  .then(([resUser, resCards]) => {
-   
-   userInfo.setUserInfo(resUser);
-   cardList.renderItems(resCards);
-   
-  }).catch((err) => console.log(err));
-}  
-allPromise();
-
-//  api.getUserInfo().then((res) => {
-//     userInfo.setUserInfo(res);
-  
-//    }).catch((err) => console.log(err));
-
-
-
-//  fetch('https://nomoreparties.co/v1/cohort-46/users/me', {
-//    headers: {
-//      authorization: '30876ae6-9c71-4f9d-a726-3e14bc235ea6'
-//    }
-//  })
-//    .then(res => res.json())
-//    .then((result) => {
-//      let nameInput = result.name;
-//      let jobInput = result.about;
-//      let avatar = result.avatar;
-//      userInfo.setUserInfo({nameInput, jobInput});
-//      userInfo.setUserInfoAvatar({avatar});
-//      console.log(result);
-//    });
-  
-  // fetch('https://mesto.nomoreparties.co/v1/cohort-46/cards', {
-  //   headers: {
-  //     authorization: '30876ae6-9c71-4f9d-a726-3e14bc235ea6'
-  //   }
-  // })
-  //   .then(res => res.json())
-  //   .then((result) => {
-  //     const cardList = new Section({
-  //       items: result,
-  //       renderer: (cardItem) => {
-  //         cardList.addItem(createCard(cardItem));
-  //       }
-  //     },
-  //     '.groups__elements'
-  //     );
-  //     cardList.renderItems();
-  //     console.log(result);
-  //   });
-
-    // fetch('https://mesto.nomoreparties.co/v1/cohort-46/users/me', {
-    //   method: 'PATCH',
-    //   headers: {
-    //     authorization: '30876ae6-9c71-4f9d-a726-3e14bc235ea6',
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //     name: 'Marie Skłodowska Curie',
-    //     about: 'Physicist and Chemist'
-    //   })
-    // });
-
-    // fetch('https://mesto.nomoreparties.co/v1/cohort-46/cards', {
-    //   method: 'POST',
-    //   headers: {
-    //     authorization: '30876ae6-9c71-4f9d-a726-3e14bc235ea6',
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //     name: 'Камчатка',
-    //     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-    //   })
-    // });
+formSubmitCard.setEventListeners();  
     

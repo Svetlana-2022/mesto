@@ -11,8 +11,10 @@
         </header>
         <main class="content">
             <section class="profile">
-                <!-- <div type="button" class="profile__avatar"></div>-->
-                <img type="button" class="profile__avatar" src="<%= require('./images/image.jpg')%>" alt="Кусто">
+                <div class="profile__cover">
+                    <img type="button" class="profile__avatar" src="<%= require('./images/image.jpg')%>" alt="Кусто">
+                    <div type="button" class="profile__hover-avatar"></div>
+                </div>
                 <div class="profile__info">
                     <h1 class="profile__title">Жак-Ив Кусто</h1>
                     <button type="button" class="profile__edit-button"  style="background-image: url(<%=require('./images/Vector\(2\).svg')%>)"></button>

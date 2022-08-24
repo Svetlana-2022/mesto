@@ -10,7 +10,8 @@
     getUserInfo() {
         this.userData = {
             nameInput: this._userName.textContent,
-            jobInput: this._userJob.textContent
+            jobInput: this._userJob.textContent,
+            _id: this._id
         };
         return this.userData; 
     }

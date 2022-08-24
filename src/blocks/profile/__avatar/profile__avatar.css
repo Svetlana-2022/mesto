@@ -1,20 +1,12 @@
 .profile__avatar {
     width: 120px;
+    height: 120px;
     border-radius: 50%;
     /*background-image: url(../../../images/image.jpg);*/
     background-color: #c4c4c4;
     margin: 0 auto 20px;
     object-fit: cover;
     cursor: pointer;
-}
-.profile__avatar:hover {
-    width: 120px;
-    background-image: url(../../../images/avatar-hover.svg);
-    background-repeat: no-repeat;
-    background-color: #000000;
-    background-size: 26px;
-    background-position: center;
-    color: #000000; 
 }
 @media screen and (min-width: 768px) {
     .profile__avatar {

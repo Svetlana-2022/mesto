@@ -1,22 +1,18 @@
 //создаёт карточку с текстом и ссылкой на изображение
 export class Card {
     //принимает в коструктор её данные и селектор её темплат-элемента
-    constructor(data, templateSelector, handleCardClick, handleDelClick, handleIsOwner, handleIsLike, handleLikesCard) {
+    constructor(data, templateSelector, { handleCardClick, handleDelClick, handleIsOwner, handleLikesCard }) {
         this._link = data.link;
         this._name = data.name;
+        this._data = data;
         this._likes = data.likes;
-        //console.log(data.likes);
-        this.isLike = handleIsLike(this._likes);
-        console.log(this.isLike);
         this._id = data._id;
         this._owner = data.owner._id;
-        //console.log(this._owner);
         this._isOwner = handleIsOwner(this._owner);
-        //console.log(this._isOwner);
         this._templateSelector = templateSelector;
         this._handleCardClick = handleCardClick;
-        this._handleDelClick = handleDelClick;
-        this._handleLikesCard =handleLikesCard;
+        this._handleDelClick = handleDelClick.bind(this);
+        this._handleLikesCard = handleLikesCard;
     }
     
     //содержит приватные методы, 
@@ -35,24 +31,32 @@ export class Card {
         this._cardImage.addEventListener('click', () => {
             this._handleCardClick(this._link, this._name);
         });
-       
         this._cardTrash = this._element.querySelector('.element__trash');
+        if(this._isOwner) {
+            console.log(this._isOwner);
             this._cardTrash.addEventListener('click', () => {
-              this._handleDeleteCard; 
+                this._handleDelClick(this._data);
             });
-        
+        }
+       
         this._likeButton = this._element.querySelector('.element__like');
         this._likeButton.addEventListener('click', () => {
-            this._handlelike();
+            this._handleLikesCard(this._data);
         });
     }
-    //для каждого обработчика
-    //переключатель лайка
-    _handlelike() { 
-       //this._likeButton.classList.toggle('element__like_active');
-       if(this._isOwner) {
-        handleLikesCard(this._owner);
-       }
+    // //для изменения цвета лайка
+    _handlelikeCheck() {
+        if(this.isLiked()) {
+            this.addLike();
+        } else {
+            this.deleteLike();
+        }
+    }
+    isLiked() {
+        return this._likes.some((item) => {
+            return this._data.currentUser._id === item._id;
+        });
+    
     }
     addLike() {
         this._likeButton.classList.add('element__like_active');
@@ -60,18 +64,15 @@ export class Card {
     deleteLike() {
         this._likeButton.classList.remove('element__like_active');
     }
+    //для отображения лайка
     setLike(item) {
         this._likes = item;
         this._cardLikeCount.textContent = this._likes.length;
     }
-
     //для удаления картинки
-    _handleDeleteCard () {
-       if(this._isOwner) {
-        handleDelClick(this._owner);
-       }
-        
-    }    
+    handleDeleteCard = () => { 
+        this._element.remove();
+    }  
     //публичный метод, который возвращает полностью работоспособный и наполненный данными элемент карточки
     generateCard() {
         this._element = this._getTemplate();
@@ -81,13 +82,16 @@ export class Card {
         this._cardTitle = this._element.querySelector('.element__title');
         this._cardTitle.textContent = this._name;
         this._cardLikeCount = this._element.querySelector('.element__like-count');
-        this._cardLikeCount.textContent = this._likes.length;
-        
+        this.setLike(this._likes);
+        this._handlelikeCheck();
+        //this.addLike();
+        //this.deleteLike();
+        this.handleDeleteCard();
         if(!this._isOwner) {
-            this._cardTrash.remove();
+           this._cardTrash.remove();
         }
-        
+        //this._setEventListeners();
         return this._element;
     }
-
+    
 }
