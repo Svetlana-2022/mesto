@@ -14,7 +14,6 @@ export class Section {
     //добавляет элемент в  контейнер
     addItem(element) {
         this._container.prepend(element);
-        //console.log(element);
     }
    
 }

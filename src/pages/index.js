@@ -16,8 +16,10 @@ const profileAddButton = document.querySelector('.profile__add-button');
 const popupForCard = document.querySelector('.popup_for_card');
 const formElementForCard = popupForCard.querySelector('.form_for_card');
 const avatar = document.querySelector('.profile__hover-avatar');
-const formElementForAvatar = popupForCard.querySelector('.form_for_avatar');
+const popupForAvatar = document.querySelector('.popup_for_avatar');
+const formElementForAvatar = popupForAvatar.querySelector('.form_for_avatar');
 const deleteButton = document.querySelector('.form__submit-button_for_delete');
+
 const config = {
   url: 'https://mesto.nomoreparties.co/v1/cohort-46/',
   headers: {
@@ -31,8 +33,9 @@ const popupForEditValid = new FormValidator(formElementForEdit, formSettings);
 popupForEditValid.enableValidation();
 const popupForCardValid = new FormValidator(formElementForCard, formSettings);
 popupForCardValid.enableValidation();
-//const popupForAvatarValid = new FormValidator(formElementForAvatar, formSettings);
-//popupForAvatarValid.enableValidation();//ПРОБЛЕМА'querySelectorAll'--null
+const popupForAvatarValid = new FormValidator(formElementForAvatar, formSettings);
+popupForAvatarValid.enableValidation();
+
 
 //экземпляр класса работы с сервером: Api
 const api = new Api(config);
@@ -41,7 +44,6 @@ const api = new Api(config);
  const allPromise = () => {
   Promise.all([api.getUserInfo(), api.getInitialCards()])
   .then(([resUser, resCards]) => {
-    console.log(resUser);
     let nameInput = resUser.name;
     let jobInput = resUser.about;
     let _id = resUser._id;
@@ -61,7 +63,7 @@ avatar.addEventListener('click', handleAvatarClick);
 //функция для открытия попапа avatar
 function handleAvatarClick() {
   formSubmitAvatar.open();
-  //popupForAvatarValid.resetValidation();//ПРОБЛЕМА--с 34
+  popupForAvatarValid.resetValidation();
 }
 //для формы аватара экземпляр класса
 const formSubmitAvatar = new PopupWithFormAvatar({
@@ -69,9 +71,15 @@ const formSubmitAvatar = new PopupWithFormAvatar({
   handleSubmit: ({avatar}) => {
     api.updateProfileAvatar({ avatar: avatar }).then((res) => {
       userInfo.setUserInfoAvatar({avatar: res.avatar});
-    }).catch((err) => console.log(err)); 
+    }).catch((err) => {
+      console.log(err);
+    }).finally(() => {
+      formSubmitAvatar.setLoading(false);
+    });
+    formSubmitAvatar.close();
   }
 });
+
 formSubmitAvatar.setEventListeners();
 
 //обработчик слушателя карточки
@@ -87,10 +95,14 @@ const userInfo = new UserInfo({nameSelector: '.profile__title', jobSelector: '.p
 const formSubmitProfile = new PopupWithForm({
   popupSelector: '.popup_for_edit',
   handleSubmit: ({nameInput, jobInput}) => {
-    console.log({nameInput, jobInput});
     api.updateProfileInfo({ name: nameInput, about: jobInput }).then((res) => {
       userInfo.setUserInfo({nameInput: res.name, jobInput: res.about});
-    }).catch((err) => console.log(err));
+    }).catch((err) => {
+      console.log(err);
+    }).finally(() => {
+      formSubmitProfile.setLoading(false);
+    });
+    formSubmitProfile.close();
   },
   handleFormPreFill: (inputs) => {
     const values = userInfo.getUserInfo();
@@ -133,13 +145,11 @@ function createCard(item) {
   handleIsOwner,  
   handleLikesCard: (data) => {
     if(card.isLiked()) {
-      console.log(card.isLiked());
       api.inLikeCard(data._id).then((res) => {
         card.deleteLike();
         card.setLike(res.likes);
       }).catch((err) => console.log(err));
-    } else {
-      console.log('cardId', data._id); 
+    } else { 
       api.likeCard(data._id).then((res) => {
         card.addLike();
         card.setLike(res.likes);
@@ -166,9 +176,13 @@ const formSubmitCard = new PopupWithForm({
   handleSubmit: ({linkCard, nameCard}) => {
     api.addCard({link: linkCard, name: nameCard}).then((res) => {
       cardList.addItem(createCard(res));
-    }).catch((err) => console.log(err));
+    }).catch((err) => {
+      console.log(err);
+    }).finally(() => {
+      formSubmitCard.setLoading(false);
+    });
     formSubmitCard.close();
   }
 });
 formSubmitCard.setEventListeners();  
-    
+

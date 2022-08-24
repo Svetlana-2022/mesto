@@ -5,6 +5,8 @@ export default class PopupWithFormAvatar extends Popup {
         this._handleSubmit = handleSubmit;
         this._inputList = this._popupSelector.querySelectorAll('.form__input');
          Array.from(this._inputList);
+         this._buttonSubmit = this._popupSelector.querySelector('.form__submit-button');
+         this._buttonTextSubmit = this._buttonSubmit.textContent;
     }
     //собирает данные всех полей
     _getInputValues() {
@@ -15,6 +17,13 @@ export default class PopupWithFormAvatar extends Popup {
         });
         return formValues;
     }
+    setLoading(isLoading) {
+        if (isLoading) {
+            this._buttonSubmit.textContent = 'Сохранение...';   
+        } else {
+            this._buttonSubmit.textContent = this._buttonTextSubmit;
+        } 
+    }
           
     //и добавляет обработчик сабмита формы
     setEventListeners() {
@@ -22,8 +31,8 @@ export default class PopupWithFormAvatar extends Popup {
         this._form = this._popupSelector.querySelector('.form');
         this._form.addEventListener('submit', (evt) => {
             evt.preventDefault();
+            this.setLoading(true);
             this._handleSubmit(this._getInputValues());
-            this.close();
         })
     }
     open() {

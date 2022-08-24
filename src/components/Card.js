@@ -33,7 +33,6 @@ export class Card {
         });
         this._cardTrash = this._element.querySelector('.element__trash');
         if(this._isOwner) {
-            console.log(this._isOwner);
             this._cardTrash.addEventListener('click', () => {
                 this._handleDelClick(this._data);
             });
@@ -84,13 +83,10 @@ export class Card {
         this._cardLikeCount = this._element.querySelector('.element__like-count');
         this.setLike(this._likes);
         this._handlelikeCheck();
-        //this.addLike();
-        //this.deleteLike();
         this.handleDeleteCard();
         if(!this._isOwner) {
            this._cardTrash.remove();
         }
-        //this._setEventListeners();
         return this._element;
     }
     
