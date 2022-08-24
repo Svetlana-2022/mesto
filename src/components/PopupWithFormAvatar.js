@@ -7,6 +7,7 @@ export default class PopupWithFormAvatar extends Popup {
          Array.from(this._inputList);
          this._buttonSubmit = this._popupSelector.querySelector('.form__submit-button');
          this._buttonTextSubmit = this._buttonSubmit.textContent;
+         console.log(this._buttonTextSubmit);
     }
     //собирает данные всех полей
     _getInputValues() {
