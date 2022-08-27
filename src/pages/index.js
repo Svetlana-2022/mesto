@@ -64,7 +64,7 @@ const api = new Api(config);
 allPromise();
 //экземпляр класса для открытия попапа удаления
 const popupForDel = new PopupWithConfirmation('.popup_for_delete');
-
+popupForDel.setEventListeners();
 //обработчик слушателя avatar
 avatar.addEventListener('click', handleAvatarClick);
 
@@ -76,7 +76,7 @@ function handleAvatarClick() {
 //для формы аватара экземпляр класса
 const formSubmitAvatar = new PopupWithForm({
   popupSelector: '.popup_for_avatar',
-  handleSubmit: ({avatar}) => {//ПРОБЛЕМА
+  handleSubmit: ({avatar}) => {
     api.updateProfileAvatar({ avatar: avatar }).then((res) => {
       userInfo.setUserInfoAvatar({avatar: res.avatar});
       formSubmitAvatar.close();
@@ -85,7 +85,6 @@ const formSubmitAvatar = new PopupWithForm({
     }).finally(() => {
       formSubmitAvatar.setLoading(false);
     });
-    
   }
 });
 
@@ -103,7 +102,7 @@ const userInfo = new UserInfo({nameSelector: '.profile__title', jobSelector: '.p
 //для формы профиля экземпляр класса
 const formSubmitProfile = new PopupWithForm({
   popupSelector: '.popup_for_edit',
-  handleSubmit: ({nameInput, jobInput}) => {//ПРОБЛЕМА
+  handleSubmit: ({nameInput, jobInput}) => {
     api.updateProfileInfo({ name: nameInput, about: jobInput }).then((res) => {
       userInfo.setUserInfo({nameInput: res.name, jobInput: res.about});
       formSubmitProfile.close();
@@ -111,8 +110,7 @@ const formSubmitProfile = new PopupWithForm({
       console.log(err);
     }).finally(() => {
       formSubmitProfile.setLoading(false);
-    });
-    
+    }); 
   },
 });
 formSubmitProfile.setEventListeners();
@@ -129,23 +127,17 @@ popupImage.setEventListeners();
 function handleCardClick (link, name) {
   popupImage.open({data: {link, name} });
 }
-//функция проверки владельца пользователя
-// const handleIsOwner = (el) => {
-//   return userInfo.id === el;
-// }
 
 //функция возвращает готовую карточку
 function createCard(item) {
   item.currentUser = userInfo.id;
   const card = new Card(item, '.element-template', 
   { handleCardClick, 
-  handleDelClick: (data) => {//ПРОБЛЕМА
+  handleDelClick: (data) => {
     popupForDel.open();
-    popupForDel.setEventListeners();
-    deleteButton.addEventListener('click', () =>{
+    popupForDel.setConfirmAction(() => {
       api.deleteCard(data._id).then(() =>{
-        //console.log(data);
-        card.handleDeleteCard(data);
+        card.handleDeleteCard();
         popupForDel.close();
       }).catch(err => console.log(err));
     }); 
@@ -189,7 +181,6 @@ const formSubmitCard = new PopupWithForm({
     }).finally(() => {
       formSubmitCard.setLoading(false);
     });
-    
   }
 });
 formSubmitCard.setEventListeners();  

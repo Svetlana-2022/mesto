@@ -1,17 +1,16 @@
 //создаёт карточку с текстом и ссылкой на изображение
 export class Card {
     //принимает в коструктор её данные и селектор её темплат-элемента
-    constructor(data, templateSelector, { handleCardClick, handleDelClick, handleIsOwner, handleLikesCard }) {
+    constructor(data, templateSelector, { handleCardClick, handleDelClick, handleLikesCard }) {
         this._link = data.link;
         this._name = data.name;
         this._data = data;
         this._likes = data.likes;
         this._id = data._id;
         this._owner = data.owner._id;
-        //this._isOwner = handleIsOwner(this._owner);
         this._templateSelector = templateSelector;
         this._handleCardClick = handleCardClick;
-        this._handleDelClick = handleDelClick.bind(this);
+        this._handleDelClick = handleDelClick;
         this._handleLikesCard = handleLikesCard;
     }
     
@@ -37,18 +36,17 @@ export class Card {
         });
         this._cardTrash = this._element.querySelector('.element__trash');
         if(this._isOwner()) {
-            console.log(this._isOwner());
             this._cardTrash.addEventListener('click', () => {
-                this._handleDelClick(this._data);
+                this._handleDelClick(this._data);   
             });
         }
-       
+
         this._likeButton = this._element.querySelector('.element__like');
         this._likeButton.addEventListener('click', () => {
             this._handleLikesCard(this._data);
         });
     }
-    // //для изменения цвета лайка
+    //для изменения цвета лайка
     _handlelikeCheck() {
         if(this.isLiked()) {
             this.addLike();
@@ -74,14 +72,8 @@ export class Card {
         this._cardLikeCount.textContent = this._likes.length;
     }
     //для удаления картинки
-    handleDeleteCard = (data) => {
-        // console.log(this._cardTitle.textContent);
-        // console.log(this._data.name);
-        // this._data = data;
-        // if(this._cardTitle.textContent === this._data.name){
-        //     this._element.remove();
-        // }
-        this._element.remove();
+    handleDeleteCard = () => {
+        this._element.remove();  
     }  
     //публичный метод, который возвращает полностью работоспособный и наполненный данными элемент карточки
     generateCard() {
@@ -94,7 +86,6 @@ export class Card {
         this._cardLikeCount = this._element.querySelector('.element__like-count');
         this.setLike(this._likes);
         this._handlelikeCheck();
-        //this.handleDeleteCard();
         if(!this._isOwner()) {
            this._cardTrash.remove();
         }
