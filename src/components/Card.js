@@ -8,7 +8,7 @@ export class Card {
         this._likes = data.likes;
         this._id = data._id;
         this._owner = data.owner._id;
-        this._isOwner = handleIsOwner(this._owner);
+        //this._isOwner = handleIsOwner(this._owner);
         this._templateSelector = templateSelector;
         this._handleCardClick = handleCardClick;
         this._handleDelClick = handleDelClick.bind(this);
@@ -25,6 +25,10 @@ export class Card {
 
         return cardElement;
     }
+    _isOwner() {
+        return this._data.currentUser === this._owner;
+    }
+    
     //устанавливают слушатели событий
     _setEventListeners() {
         this._cardImage = this._element.querySelector('.element__mask-group');
@@ -32,7 +36,8 @@ export class Card {
             this._handleCardClick(this._link, this._name);
         });
         this._cardTrash = this._element.querySelector('.element__trash');
-        if(this._isOwner) {
+        if(this._isOwner()) {
+            console.log(this._isOwner());
             this._cardTrash.addEventListener('click', () => {
                 this._handleDelClick(this._data);
             });
@@ -53,7 +58,7 @@ export class Card {
     }
     isLiked() {
         return this._likes.some((item) => {
-            return this._data.currentUser._id === item._id;
+            return this._data.currentUser === item._id;
         });
     
     }
@@ -69,7 +74,13 @@ export class Card {
         this._cardLikeCount.textContent = this._likes.length;
     }
     //для удаления картинки
-    handleDeleteCard = () => { 
+    handleDeleteCard = (data) => {
+        // console.log(this._cardTitle.textContent);
+        // console.log(this._data.name);
+        // this._data = data;
+        // if(this._cardTitle.textContent === this._data.name){
+        //     this._element.remove();
+        // }
         this._element.remove();
     }  
     //публичный метод, который возвращает полностью работоспособный и наполненный данными элемент карточки
@@ -83,8 +94,8 @@ export class Card {
         this._cardLikeCount = this._element.querySelector('.element__like-count');
         this.setLike(this._likes);
         this._handlelikeCheck();
-        this.handleDeleteCard();
-        if(!this._isOwner) {
+        //this.handleDeleteCard();
+        if(!this._isOwner()) {
            this._cardTrash.remove();
         }
         return this._element;

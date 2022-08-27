@@ -3,10 +3,10 @@ export default class PopupWithForm extends Popup {
     constructor({ popupSelector, handleSubmit, handleFormPreFill }) {
         super(popupSelector);
         this._handleSubmit = handleSubmit;
-        this._inputList = this._popupSelector.querySelectorAll('.form__input');
+        this._inputList = this._popupElement.querySelectorAll('.form__input');
         Array.from(this._inputList);
         this._handleFormPreFill = handleFormPreFill;
-        this._buttonSubmit = this._popupSelector.querySelector('.form__submit-button');
+        this._buttonSubmit = this._popupElement.querySelector('.form__submit-button');
         this._buttonTextSubmit = this._buttonSubmit.textContent;
     }
     setLoading(isLoading) {
@@ -24,11 +24,16 @@ export default class PopupWithForm extends Popup {
         });
         return formValues; 
     }
+    setInputValues(data) {
+        this._inputList.forEach(input => {
+            input.value = data[ input.name ];
+        });
+    }
           
     //и добавляет обработчик сабмита формы
     setEventListeners() {
         super.setEventListeners();
-        this._form = this._popupSelector.querySelector('.form');
+        this._form = this._popupElement.querySelector('.form');
         this._form.addEventListener('submit', (evt) => {
             evt.preventDefault();
             this.setLoading(true);
@@ -36,9 +41,6 @@ export default class PopupWithForm extends Popup {
         })
     }
     open() {
-        if(this._handleFormPreFill) {
-           this._handleFormPreFill(this._inputList);
-        }
         super.open();
     }
     close() {

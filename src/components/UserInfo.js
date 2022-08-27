@@ -11,7 +11,7 @@
         this.userData = {
             nameInput: this._userName.textContent,
             jobInput: this._userJob.textContent,
-            _id: this._id
+            _id: this.id
         };
         return this.userData; 
     }
@@ -19,9 +19,9 @@
     setUserInfo({nameInput, jobInput, _id}) {
         this._userName.textContent = nameInput;
         this._userJob.textContent = jobInput;
-        this._id = _id; 
+        this.id = _id; 
     }
     setUserInfoAvatar({ avatar}) {
-        this._avatar.src = avatar; 
+        this._avatar.src = avatar;
     }
 }
